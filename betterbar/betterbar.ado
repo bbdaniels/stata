@@ -1,15 +1,4 @@
-//! version 1.0 07NOV2018  DIME Analytics bdaniels@worldbank.org
-
-// Confidence intervals alternative specification
-
-	cap prog drop betterbarci
-	prog def betterbarci
-
-	syntax anything [using] [if] [in] [fw iw aw pw] , [*]
-
-	betterbar `anything' `using' `if' `in' [`weight'`exp'] , `options' ci
-
-	end
+//! version 1.1 08NOV2018  DIME Analytics bdaniels@worldbank.org
 
 // Better bar graph program
 
