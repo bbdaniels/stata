@@ -1,244 +1,5 @@
-** Stores, expands, and outputs interaction terms
-
-**** REQUIREMENTS ****
-
-* Depends on xi3 and xml_tab
-
-
-***** GETSTAT ****
-* Stores and lists summary statistics from regression DEPVAR in ${xiStats}
-
-cap prog drop getstat
-prog def getstat
-
-syntax anything , /// List of statistics
-	[clear] // Clears stats list. Used automatically in -xisto- and can be used as long as the maximal list of statistics is ordered last.
-
-	if "`clear'" == "clear" global xiStats "" // resets list of added statistics
-
-	foreach stat in `anything' { // builds list of summary statistics from regression DEPVAR
-
-		qui sum `e(depvar)' if e(sample)
-			local theStat = "r(`stat')"
-			local fullstat = `theStat'
-		estadd scalar `stat' = `fullstat'
-
-		global xiStats "${xiStats} stat_`stat'"
-
-		}
-
-end
-
-***** XIREG ******
-* Stores regression for translation into expanded format
-
-cap prog drop xiReg
-prog def xiReg
-
-syntax anything /// Name of regression
-	[if] ///
-	, ///
-	command(string asis) /// Command (regress, ivregress 2sls, etc)
-	depvar(string asis) /// Dependent variable name
-	rhs(string asis) /// Full RHS
-	[*] /// regopts
-	[clear] // restarts regression accumulation
-
-	if "`clear'" != "" global theVarlist ""
-	if "`clear'" != "" global theCommands ""
-	if "`clear'" != "" global theRegNames ""
-
-	* Save the regression
-
-		global theVarlist = `"${theVarlist} `rhs'"'
-		global theCommands = `"${theCommands}  "`command' `depvar' `rhs' `if', `options'""'
-		global theRegNames = `"${theRegNames} `anything'"'
-
-end
-
-***** xiGen *****
-
-cap prog drop xiGen
-prog def xiGen , rclass
-
-syntax anything , [prefix(string asis)]
-
-qui xi3 `anything'
-local conVars = subinstr("`anything'","*"," ",.)
-	foreach word in `conVars' {
-		if regexm("`word'","i.") local conVars = subinstr("`conVars'","`word'","",.)
-		}
-
-foreach var of varlist `_dta[__xi__Vars__To__Drop__]' {
-
-	local theLogic : var label `var'
-
-	local theLogic = subinstr("`theLogic'","&","",.)
-	local theLogic = subinstr("`theLogic'","*"," ",.)
-
-	local n_logic : word count `theLogic'
-
-		local theNewLabel ""
-		local and ""
-
-		forvalues i = 1/`n_logic' {
-
-			local theNextLogic : word `i' of `theLogic'
-
-			if (strpos("`theNextLogic'","==") > 0) | (strpos("`theNextLogic'","=") > 0) { // Check for categorical
-
-				local theNextLogic = subinstr("`theNextLogic'","=="," ",.)
-				local theNextLogic = subinstr("`theNextLogic'","="," ",.)
-				local theNextLogic = subinstr("`theNextLogic'","*"," ",.)
-				local theNextLogic = subinstr("`theNextLogic'","("," ",.)
-				local theNextLogic = subinstr("`theNextLogic'",")"," ",.)
-				local theVar : word 1 of `theNextLogic'
-				local theVal : word 2 of `theNextLogic'
-
-				local theLab : label (`theVar') `theVal'
-
-				local theNewLabel `theNewLabel' `and' `theLab'
-					local and "&"
-
-				}
-
-			else { // for continuous
-
-					local and "*"
-
-					local theNextLogic = subinstr("`theNextLogic'","=="," ",.)
-					local theNextLogic = subinstr("`theNextLogic'","="," ",.)
-					local theNextLogic = subinstr("`theNextLogic'","*"," ",.)
-					local theNextLogic = subinstr("`theNextLogic'","("," ",.)
-					local theNextLogic = subinstr("`theNextLogic'",")"," ",.)
-					local theVar : word 1 of `theNextLogic'
-					local theVal : word 2 of `theNextLogic'
-
-					local theLab : var label `theVar'
-
-					local theNewLabel `theNewLabel' `and' `theLab'
-
-					}
-			}
-
-			local theNewLabel = itrim(trim("`theNewLabel'"))
-			local theNewLabel = regexr("`theNewLabel'","^\*","")
-			local theNewLabel = regexr("`theNewLabel'","^&","")
-			local theNewLabel = itrim(trim("`theNewLabel'"))
-		label var `var' "`prefix' `theNewLabel'"
-
-			local theNewName = subinstr("`var'","_I","",1)
-
-			cap clonevar `theNewName' = `var'
-				drop `var'
-
-			local theVarlist "`theVarlist' `theNewName'"
-
-	}
-
-	codebook `theVarlist', compact
-	return local xilist "`theVarlist' `conVars'"
-
-end
-
-***** XIOUT *****
-
-* Wrapper for xml_tab
-
-cap prog drop xiOut
-prog def xiOut
-
-syntax using, /// Location to output all saved regressions
-	[stats(string asis)] /// Calls getstat
-	[*] // xml_tab options
-
-	preserve
-
-	local theRawCommands = `"${theCommands}"'
-	global theVarlist : list uniq global(theVarlist)
-
-	* Build the list of interaction terms
-
-		local theInteractions ""
-		foreach item in ${theVarlist} {
-			if (strpos("`item'","*") > 0 | strpos("`item'","i.") > 0) local theInteractions "`theInteractions' `item'"
-			}
-
-	* Extract the variables and clonevar them into 2-character dummy names for non-redundancy in xi3 (aa_-zz_)
-
-		local theIvars = subinstr(subinstr("`theInteractions'","*"," ",.),"i.","",.)
-		local theIvars : list uniq theIvars
-		local theNewInteractions = "`theInteractions'"
-
-		global theCommands = subinstr(`"${theCommands}"',"*"," * ",.)
-		global theCommands = subinstr(`"${theCommands}"',"i."," i. ",.)
-
-			local x = 0
-			local y = 1
-			foreach var in `theIvars' {
-				local ++x
-				local theLetter2 : word `x' of `c(alpha)'
-				local theLetter : word `y' of `c(alpha)'
-				if `x' == 26 {
-					local x = 0
-					local ++y
-					}
-
-				clonevar `theLetter'`theLetter2'_ = `var'
-				global theCommands = subinstr(`"${theCommands}"',"`var'","`theLetter'`theLetter2'_",.)
-				local theNewInteractions = subinstr("`theNewInteractions'","`var'","`theLetter'`theLetter2'_",.)
-				}
-
-		global theCommands = subinstr(`"${theCommands}"'," * ","*",.)
-		global theCommands = subinstr(`"${theCommands}"'," i. ","i.",.)
-
-	* xi3 the dummy names and replace the interaction terms with the dummy xi3 outputs
-
-		foreach interaction in `theNewInteractions' {
-			qui xiGen `interaction'
-			global theCommands = subinstr(`"${theCommands}"',"`interaction'","`r(xilist)'",.)
-			}
-
-	* Run the regressions
-
-		local theN : word count ${theCommands}
-		forvalues i = 1/`theN' {
-			local theRawReg : word `i' of `theRawCommands'
-			local theReg : word `i' of ${theCommands}
-			local theName : word `i' of ${theRegNames}
-
-			di in red "`theName': `theRawReg'"
-			local theReg : list uniq theReg
-			`theReg'
-			qui eststo `theName'
-
-			if "`stats'" != "" {
-				qui getstat `stats' , clear
-				}
-
-			}
-
-	* Output
-
-	xml_tab ${theRegNames} ///
-		`using' ///
-		,  `options' ///
-		below c("Constant") stats(`stats' r2 N) lines(COL_NAMES 3 LAST_ROW 3 _cons 2) format((SCLB0) (SCCB0 NCRR2 NCRI2)) drop(o.*)
-
-	restore
-
-	* Clear the global macros
-
-		global theVarlist ""
-		global theCommands ""
-		global theRegNames ""
-
-end
-
-***** XI3 *******
-
 *! version 1.1a, changed version control, always runs command using current stata version 3/23/09
-*! version 1.1, omit missing from some coding schemes, 6/30/03
+*! version 1.1, omit missing from some coding schemes, 6/30/03 
 *! version 1.0 (April 7, 2003)
 *! Modified codings to permit time series operators
 *! Replace f with a
@@ -248,17 +9,13 @@ end
 *! problems
 *!   does not handle @ for 3 vars
 *!   freaks out of length of terms exceeds 32
-* Michael Mitchell & Phil Ender
-* Academic Technology Services
-* UCLA
-* mnm@@ucla.edu ender@@ucla.edu
 
 capture program drop xi3
 program define xi3
   version 7
 
   * abort if less than version 7
-  if _caller() < 7 {
+  if _caller() < 7 { 
     display as error "Requires version 7"
     exit
   }
@@ -289,8 +46,8 @@ program define xi3
   * determine format of xi3 call
   gettoken first second : 0, parse(":")
   if "`second'" != "" {
-    if "`first'" != ":" {
-      * xi, pre() :
+    if "`first'" != ":" { 
+      * xi, pre() : 
       local 0 `first'
       syntax [, PREfix(string)]
       if length("`prefix'") > 4 {
@@ -300,16 +57,16 @@ program define xi3
       gettoken colon 0: second, parse(" :")
     }
     else {
-      * xi :
+      * xi : 
       local 0 `second'
       local prefix "_I"
     }
     local xeq "yes"
   }
   else {
-    * xi items
+    * xi items 
     gettoken comma : 0, parse(" ,")
-    if "`comma'" == "," {
+    if "`comma'" == "," { 
       * xi, pre() i.var
       gettoken comma 0 : 0, parse(" ,")
       gettoken prefix rest: 0, parse(" ")
@@ -321,13 +78,13 @@ program define xi3
       }
       local 0 "`rest'"
     }
-    else {
-      * xi i.var
+    else {	
+      * xi i.var 
       local prefix "_I"
     }
   }
   global X__pre "`prefix'"
-
+   
   * drop variables called from last xi command
   local todrop : char _dta[__xi__Vars__To__Drop__]
   foreach itemtodrop of local todrop {
@@ -335,7 +92,7 @@ program define xi3
   }
 
   * clear out placeholder for vars we will create
-  char _dta[__xi__Vars__To__Drop__]
+  char _dta[__xi__Vars__To__Drop__] 
 
   * terms we will create that are i. and are continuous
   global X__in
@@ -350,7 +107,7 @@ program define xi3
   local orig `0'
   gettoken t 0 : 0, parse(`" :,"()[]="') quotes
   while `"`t'"' != "" {
-
+	
     if index(upper(`"`t'"'),"S.") {
       display as text "Please note that version 1.0+ changed the s. prefix to g."
       display as text "  see help xi3 for more information"
@@ -368,7 +125,7 @@ program define xi3
     * if it is an interaction, or has a prefix
     if index(`"`t'"',"*") | index(`"`t'"',"|") | index(`"`t'"',"@") | index(upper(`"`t'"'),"I.") | index(upper(`"`t'"'),"G.") | index(upper(`"`t'"'),"E.") | index(upper(`"`t'"'),"H.") | index(upper(`"`t'"'),"R.") | index(upper(`"`t'"'),"O.") | index(upper(`"`t'"'),"A.") | index(upper(`"`t'"'),"B.") | index(upper(`"`t'"'),"C.") | index(upper(`"`t'"'),"U.") {
       myparse `t'
-
+	  
       * modify "orig", substituting in new terms, which will be executed later
       if `"$S_1"' != "." {
         local orig : subinstr local orig `"`t'"' `"$S_1"'
@@ -387,7 +144,7 @@ program define xi3
   * global X__cont
   * global X__pre
 
-  * execute command if used xi:
+  * execute command if used xi: 
   if "`xeq'"=="yes" {
     * 1.1a 3/23/09 : run using current stata version
     version `c(stata_version)' : `orig'
@@ -399,13 +156,13 @@ capture program drop myparse
 program define myparse
   version 7
   if ("$xi3_debug"=="1") { display "Calling myparse with `*'" }
-
-  local vars
-  local toks
+  
+  local vars 
+  local toks 
 
   * This expression will be replaced with myS_1
-  local myS_1
-
+  local myS_1 
+  
   * take input and parse it into a list of variable names and tokens
   * vars : list of variables, e.g. read i.female
   * toks : list of tokens connecting them, e.g. *
@@ -430,8 +187,8 @@ program define myparse
       if ("$xi3_debug"=="1") { display "unabbreviated `word' is `word2'" }
       local vars "`vars' `word2'"
     }
-    local i=`i'+1
-  }
+    local i=`i'+1		
+  }  
   local varcnt : word count `vars'
   local tokcnt : word count `toks'
 
@@ -450,15 +207,15 @@ program define myparse
       }
     }
   }
-
+  
   if ("$xi3_debug"=="1") { display "There are `varcnt' vars: `vars'" }
   if ("$xi3_debug"=="1") { display "There are `tokcnt' toks: `toks' and hasat is `hasat'" }
 
-  local intprefix
+  local intprefix 
   local varnum 0
-
+ 
   * work through coding each of the variables
-  * make
+  * make 
   *   varX : variable name for variable X
   *   varabrX: abbreviated variable (for interaction) for variable X
   *   varcatX: 0/1, 1 if variable X is categorical
@@ -486,7 +243,7 @@ program define myparse
 
       if ("$xi3_debug"=="1") { display as input "coding `varname'" }
 
-      * code the categorical variable
+      * code the categorical variable 
       xi_ei `varname'
 
       * if S_1 indicates variable already exists, then dont add it to S_1
@@ -517,7 +274,7 @@ program define myparse
         }
       }
 
-      * add variable to X__cont (to see if it is already coded next time)
+      * add variable to X__cont (to see if it is already coded next time)  
       global X__cont "$X__cont `varname'"
 
       * save this as well, for postgr3
@@ -525,9 +282,9 @@ program define myparse
 
     }
     if ("$xi3_debug"=="1") { display "myS_1 is now `myS_1'" }
-  }
+  }    
 
-  * show results if debugging
+  * show results if debugging 
   foreach varnum of numlist 1/`varcnt' {
     if ("$xi3_debug"=="1") { display "var number `varnum' is named `var`varnum'' abbrev is `varabr`varnum'' categ is `varcat`varnum'' and contains ${xi3_`var`varnum''}" }
   }
@@ -544,21 +301,21 @@ program define myparse
       * loop j 1 to number of terms in this interaction
       foreach j of numlist 1/`varcnt' {
         * only do each term once, when i is less than j
-        if (`i' < `j')  {
+        if (`i' < `j')  { 
           * only process this interaction if it has not already been processed before
           if ("$xi3_debug"=="1") { display "!!!!!!!!seeing if `var`i'' by `var`j'' as ${xi3_`var`i''X`var`j''} already exists" }
           if ("${xi3_`var`i''X`var`j''}" != "") {
             * display "`var`i'' by `var`j'' already exists"
           }
           else {
-
+  
             checklen "xi3_`var`i''X`var`j''"
-            global xi3_`var`i''X`var`j''
+            global xi3_`var`i''X`var`j'' 
 
             * check to see if the abbreviated form of the interaction has been used
 
             * get prefixes for term 1 and 2
-            local prenum
+            local prenum 
 
             * increment "prenum" until unique
             capture unab dupint : $X__pre`prenum'`varabr`i''*X`varabr`j''*
@@ -570,7 +327,7 @@ program define myparse
 
             * cycle through all of the terms for vari
             foreach macroi of global xi3_`var`i'' {
-              local suffi
+              local suffi 
               local lbli "`var`i''"
               if `varcat`i'' {
                 local posi = length("`macroi'") - index(reverse("`macroi'"),"_") + 2
@@ -587,27 +344,27 @@ program define myparse
                   local suffj = substr("`macroj'",`posj',.)
                   local lblj : variable label `macroj'
                 }
-
-                * this is the target variable
+ 
+                * this is the target variable              
                 local targvar $X__pre`prenum'`varabr`i''`suffi'X`varabr`j''`suffj'
 
                 * add this term to the macro
                 global xi3_`var`i''X`var`j'' ${xi3_`var`i''X`var`j''}  `targvar'
                 * make the variable
-                generate `targvar' = `macroi' * `macroj'
+                generate `targvar' = `macroi' * `macroj'            
                 * label the variable
                 label var `targvar' "`lbli'*`lblj'"
                 * add to list of variables
                 local myS_1 "`myS_1' `targvar'"
                 char _dta[__xi__Vars__To__Drop__] `_dta[__xi__Vars__To__Drop__]' `targvar'
                 if ("$xi3_debug"=="1") { display "char _dta[__xi__Vars__To__Drop__] `_dta[__xi__Vars__To__Drop__]' `targvar'" }
-              }
+              } 
             }
           }
         }
       }
     }
-  }
+  } 
 
   * make 3 way interactions with *
   if (`varcnt' >= 3) & (`hasat'==0) {
@@ -615,10 +372,10 @@ program define myparse
       foreach j of numlist 1/`varcnt' {
         foreach k of numlist 1/`varcnt' {
           if (`i' < `j') & (`j' < `k') {
-            checklen "xi3_`var`i''X`var`j''X`var`k''"
-            global xi3_`var`i''X`var`j''X`var`k''
+            checklen "xi3_`var`i''X`var`j''X`var`k''" 
+            global xi3_`var`i''X`var`j''X`var`k'' 
 
-            local prenum
+            local prenum 
             capture unab dupint : $X__pre`prenum'`varabr`i''*X`varabr`j''*X`varabr`k''*
             while "`dupint'" != "" {
               local prenum = `prenum' + 1
@@ -627,7 +384,7 @@ program define myparse
             }
 
             foreach macroi of global xi3_`var`i'' {
-              local suffi
+              local suffi 
               local lbli "`var`i''"
               if `varcat`i'' {
                 local posi = length("`macroi'") - index(reverse("`macroi'"),"_") + 2
@@ -651,11 +408,11 @@ program define myparse
                     local suffk = substr("`macrok'",`posk',.)
                     local lblk : variable label `macrok'
                   }
-
+               
                   local targvar $X__pre`prenum'`varabr`i''`suffi'X`varabr`j''`suffj'X`varabr`k''`suffk'
 
                   global xi3_`var`i''X`var`j''X`var`k'' ${xi3_`var`i''X`var`j''X`var`k''} `targvar'
-                  generate `targvar' = `macroi' * `macroj' * `macrok'
+                  generate `targvar' = `macroi' * `macroj' * `macrok'            
                   label var `targvar' "`lbli'*`lblj' * `lblk'"
                   local myS_1 "`myS_1' `targvar'"
                   char _dta[__xi__Vars__To__Drop__] `_dta[__xi__Vars__To__Drop__]' `targvar'
@@ -666,8 +423,8 @@ program define myparse
         }
       }
     }
-  }
-
+  } 
+   
   * make 2 way interactions with AT
   if (`varcnt' >= 2) & (`hasat'==1) {
 
@@ -681,7 +438,7 @@ program define myparse
       * loop j 1 to number of terms in this interaction
       foreach j of numlist 1/`varcnt' {
         * only do each term once, when i is less than j
-        if (`i' < `j')  {
+        if (`i' < `j')  { 
           * only process this interaction if it has not already been processed before
           if ("${xi3_`var`i''W`var`j''}" != "") {
             * display "`var`i'' W `var`j'' already exists"
@@ -689,12 +446,12 @@ program define myparse
           else {
             * clear macro variable for holding contents of the interaction term
             checklen "xi3_`var`i''W`var`j''"
-            global xi3_`var`i''W`var`j''
+            global xi3_`var`i''W`var`j'' 
 
             * check to see if the abbreviated form of the interaction has been used
 
             * get prefixes for term 1 and 2
-            local prenum
+            local prenum 
 
             * increment "prenum" until unique
             capture unab dupint : $X__pre`prenum'`varabr`i''*W`varabr`j''*
@@ -705,7 +462,7 @@ program define myparse
             }
             * cycle through all of the terms for vari
             foreach macroi of global xi3_`var`i'' {
-              local suffi
+              local suffi 
               local lbli "`var`i''"
               if `varcat`i'' {
                 local posi = length("`macroi'") - index(reverse("`macroi'"),"_") + 2
@@ -713,18 +470,18 @@ program define myparse
                 local lbli : variable label `macroi'
                 if ("$xi3_debug"=="1") { display "macroi is `macroi' and posi is `posi' and suffi is `suffi'" }
               }
-              * cycle through all levels of var2
+              * cycle through all levels of var2             
               foreach group of numlist 1/`ng' {
                 * get the group for b
-                tempvar on
+                tempvar on 
                 qui gen `on' = .
                 qui replace `on'=cond(`withing'==`group',_n,`on'[_n-1])
                 local withinv = `var2'[`on'[_N]]
-
+    
                 local suffj = `withinv'
                 local lblj : variable label `var2'
 
-                * this is the target variable
+                * this is the target variable              
                 local targvar $X__pre`prenum'`varabr`i''`suffi'W`varabr`j''`suffj'
 
                 * add this term to the macro
@@ -733,7 +490,7 @@ program define myparse
                 * make the variable
                 quietly generate double `targvar' = 0
                 quietly replace `targvar' = `macroi' if `withing'==`group'
-
+                
                 * label the variable
                 label var `targvar' "`lbli' @ `var2'==`withinv'"
 
@@ -741,10 +498,10 @@ program define myparse
                 local myS_1 "`myS_1' `targvar'"
                 char _dta[__xi__Vars__To__Drop__] `_dta[__xi__Vars__To__Drop__]' `targvar'
               }
-            }
+            }  
           }
         }
-      }
+      } 
     }
   }
 
@@ -789,13 +546,13 @@ program define xi_ei /* I.<name> */
   * if x.varname is already included, dont code it again ;
   if ("$xi3_debug"=="1") { display "seeing if we should code `vn' if it is in $X__in" }
   if subinword("$X__in","`vn'"," ",1) != "$X__in" {
-    global S_1
+    global S_1 
     if ("$xi3_debug"=="1") { display "`vn' already coded since part of $X__in, wont code it again!" }
-    exit
+    exit 
   }
-
+  
   if ("$xi3_debug"=="1") { display "WE ARE CODING `vn'" }
-
+  
 
   *11. initialize macro xi3_varname
   global xi3_`vn' " "
@@ -859,8 +616,8 @@ program define xi_ei /* I.<name> */
 
 	*** 3. create "omitg" (omitted group) and "omit" (omitted value) based on
       *      char.  Used for all types of contrasts, except for i. (indicator)
-	if "`omis'" == "" {
-      	local omitg = 1
+	if "`omis'" == "" { 
+      	local omitg = 1 
 	}
 	else {
 		local omitg = `omis'
@@ -892,7 +649,7 @@ program define xi_ei /* I.<name> */
             * get "prival", value for prior group (for var label)
 		if (`j' == 1) {
 			local prival = -99999999.987654321
-		}
+		} 
 		else {
 			qui replace `on'=cond(`g'==(`j'-1),_n,`on'[_n-1])
 			local prival = `vn'[`on'[_N]]
@@ -901,7 +658,7 @@ program define xi_ei /* I.<name> */
             * get "nextval", value for next group (for var label)
 		if (`j' == `ng') {
 			local nextval = -99999999.987654321
-		}
+		} 
 		else {
 			qui replace `on'=cond(`g'==(`j'+1),_n,`on'[_n-1])
 			local nextval = `vn'[`on'[_N]]
@@ -935,12 +692,12 @@ program define xi_ei /* I.<name> */
 
 	*** 6. override the omitted group, except for "indicator" contrasts
 	if "`contype'" != "ind" {
-		if `useuser' {
-			local jmax `omit'
-		}
-		else {
-			local jmax `omitg'
-		}
+		if `useuser' { 
+			local jmax `omit' 
+		} 
+		else { 
+			local jmax `omitg' 
+		} 
 		local dval `omit'
       }
       * 6. end of change
@@ -1019,7 +776,7 @@ end
 capture program drop mk_ind
 program define mk_ind
   args       newvar   curvar curval  omit   curvarg curvalg omitg   ncat prival nextval
-  qui gen byte `newvar' = `curvarg'==`curvalg' if `curvarg' < .
+  qui gen byte `newvar' = `curvarg'==`curvalg' if `curvarg' < . 
   label var `newvar' "`curvar'=`curval'"
 end
 
@@ -1030,7 +787,7 @@ program define mk_cen
   qui gen double `newvar' = `curvarg'==`curvalg' if `curvarg'< .
   qui sum `newvar'
   qui replace `newvar' = `newvar' - r(mean)
-  label var `newvar' "`curvar'(`curval' vs. `omit')"
+  label var `newvar' "`curvar'(`curval' vs. `omit')" 
 end
 
 * G. group coding: compares each level to a reference group
@@ -1051,7 +808,7 @@ program define mk_dev
 end
 
 * H. Helmert coding: compares leversl of a variable with mean of subsequent levels
-* forward difference, each category versus next
+* forward difference, each category versus next 
 capture program drop mk_hel
 program define mk_hel
   * last group should be omitted
@@ -1065,7 +822,7 @@ program define mk_hel
   else {
     label var `newvar' "`curvar'(`curval' vs. `nextval'+)"
   }
-
+  
 end
 
 * R. Reverse Helmert coding, compares levels of a variables with mean of previous levels
@@ -1098,7 +855,7 @@ program define mk_orth
 end
 
 * A. Adjacent forward differences: adjacent levels, each vs. next
-* forward difference, each category versus next
+* forward difference, each category versus next 
 * `i'=1 to `ncat'-1
 capture program drop mk_fdif
 program define mk_fdif
@@ -1183,7 +940,7 @@ end
 capture program drop checklen
 program define checklen
   * display "checking length of `*'"
-  if (length("`*'") > 31) {
+  if (length("`*'") > 31) { 
     display as error "Sorry, but the length of `*' exceeds 31 characters."
     display as error "Please shorten the names of your variables to make this work"
     exit 999
@@ -1191,20 +948,5 @@ program define checklen
 end
 
 
+exit
 
-***** DEMO ******
-
-	cd "/users/bbdaniels/desktop/"
-
-	sysuse auto, clear
-
-	xiReg reg1 , clear 	command(ivregress 2sls) depvar(price) rhs( ( i.foreign*headroom = turn*mpg ) gear_ratio)
-	xiReg reg2 , 		command(regress) depvar(price) rhs( i.foreign*headroom*displacement )
-
-	xiOut ///
-		using "demo.xls" ///
-		, replace stats(mean)
-
-	xiGen i.foreign*headroom
-
-* Have a lovely day!
