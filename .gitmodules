@@ -1,0 +1,3 @@
+[submodule "src/betterbar"]
+	path = src/betterbar
+	url = https://github.com/bbdaniels/betterbar
