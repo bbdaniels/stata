@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /src/dta2kml/dta2kml.ado
-f /src/dta2kml/dta2kml.sthlp
+f /pkg/dta2kml/dta2kml.ado
+f /pkg/dta2kml/dta2kml.sthlp
