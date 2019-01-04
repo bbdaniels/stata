@@ -27,4 +27,4 @@
 	url = https://github.com/bbdaniels/crossfold
 [submodule "src/statflow"]
 	path = src/statflow
-	url = https://github.com/bbdaniels/statflow.git
+	url = https://github.com/bbdaniels/statflow
