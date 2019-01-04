@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /src/txt2qr/txt2qr.ado
-f /src/txt2qr/txt2qr.sthlp
+f /pkg/txt2qr/txt2qr.ado
+f /pkg/txt2qr/txt2qr.sthlp

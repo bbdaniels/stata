@@ -32,7 +32,8 @@ cd "${directory}"
   	local items ""
   	foreach item in `ado' `hlp' {
   		local items "`items' ${directory}/src/`file'/`item'"
-  		file write `file' "f /src/`file'/`item'" _n
+  		file write `file' "f /pkg/`file'/`item'" _n
+      copy "${directory}/src/`file'/`item'" "${directory}/pkg/`item'" , replace
   	}
   	file close `file'
 
