@@ -4,9 +4,6 @@
 [submodule "src/makeid"]
 	path = src/makeid
 	url = https://github.com/bbdaniels/makeid
-[submodule "src/flowchart"]
-	path = src/flowchart
-	url = https://github.com/bbdaniels/flowchart
 [submodule "src/knapsack"]
 	path = src/knapsack
 	url = https://github.com/bbdaniels/knapsack
@@ -28,3 +25,6 @@
 [submodule "src/crossfold"]
 	path = src/crossfold
 	url = https://github.com/bbdaniels/crossfold
+[submodule "src/statflow"]
+	path = src/statflow
+	url = https://github.com/bbdaniels/statflow.git
