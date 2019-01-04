@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /pkg/crossfold/crossfold.ado
-f /pkg/crossfold/crossfold.sthlp
+f /pkg/crossfold.ado
+f /pkg/crossfold.sthlp

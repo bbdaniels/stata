@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /pkg/sumstats/sumstats.ado
-f /pkg/sumstats/sumstats.sthlp
+f /pkg/sumstats.ado
+f /pkg/sumstats.sthlp

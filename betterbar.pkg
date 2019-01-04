@@ -1,6 +1,6 @@
 v 0.1
 d Benjamin Daniels
-f /pkg/betterbar/betterbar.ado
-f /pkg/betterbar/betterbarci.ado
-f /pkg/betterbar/betterbarci.sthlp
-f /pkg/betterbar/betterbar.sthlp
+f /pkg/betterbar.ado
+f /pkg/betterbarci.ado
+f /pkg/betterbarci.sthlp
+f /pkg/betterbar.sthlp
