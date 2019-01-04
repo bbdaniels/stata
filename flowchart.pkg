@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /pkg/flowchart/statflow.ado
-f /pkg/flowchart/statflow.sthlp
+f /pkg/statflow.ado
+f /pkg/statflow.sthlp

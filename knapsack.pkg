@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /pkg/knapsack/knapsack.ado
-f /pkg/knapsack/knapsack.sthlp
+f /pkg/knapsack.ado
+f /pkg/knapsack.sthlp

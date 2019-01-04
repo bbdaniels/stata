@@ -1,4 +1,4 @@
 v 0.1
 d Benjamin Daniels
-f /pkg/makeid/makeid.ado
-f /pkg/makeid/makeid.sthlp
+f /pkg/makeid.ado
+f /pkg/makeid.sthlp
