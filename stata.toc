@@ -3,10 +3,10 @@ d Benjamin Daniels
 p dta2kml dta2kml
 p outwrite outwrite
 p forest forest
-p flowchart flowchart
 p txt2qr txt2qr
 p crossfold crossfold
 p knapsack knapsack
+p statflow statflow
 p betterbar betterbar
 p sumstats sumstats
 p makeid makeid
