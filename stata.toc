@@ -1,12 +1,12 @@
 v 0.1
 d Benjamin Daniels
-p /pkg/dta2kml dta2kml
-p /pkg/outwrite outwrite
-p /pkg/forest forest
-p /pkg/flowchart flowchart
-p /pkg/txt2qr txt2qr
-p /pkg/crossfold crossfold
-p /pkg/knapsack knapsack
-p /pkg/betterbar betterbar
-p /pkg/sumstats sumstats
-p /pkg/makeid makeid
+p dta2kml dta2kml
+p outwrite outwrite
+p forest forest
+p flowchart flowchart
+p txt2qr txt2qr
+p crossfold crossfold
+p knapsack knapsack
+p betterbar betterbar
+p sumstats sumstats
+p makeid makeid
