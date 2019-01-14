@@ -41,8 +41,10 @@ cd "${directory}"
   	file close `file'
 
   	!zip `file'.zip `zip'
+    copy "${directory}/`file'.zip" "${directory}/zip/`file'.zip" , replace
 
     !rm `zip'
+    !rm `file'.zip
   }
 
   // Finish writing TOC
