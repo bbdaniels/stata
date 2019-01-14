@@ -30,14 +30,19 @@ cd "${directory}"
   		file write `file' "v 0.1"  _n "d Benjamin Daniels"  _n
 
   	local items ""
+    local zip ""
   	foreach item in `ado' `hlp' {
   		local items "`items' ${directory}/src/`file'/`item'"
   		file write `file' "f /pkg/`item'" _n
       copy "${directory}/src/`file'/`item'" "${directory}/pkg/`item'" , replace
+      copy "${directory}/src/`file'/`item'" "${directory}/`item'" , replace
+      local zip "`zip' `item'"
   	}
   	file close `file'
 
-  	!zip `file'.zip `items'
+  	!zip `file'.zip `zip'
+
+    !rm `zip'
   }
 
   // Finish writing TOC
