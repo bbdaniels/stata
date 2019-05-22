@@ -1,4 +1,4 @@
-//! version 1.0 31DEC2018  DIME Analytics bbdaniels@gmail.com
+//! version 1.1 22 May 2019 Benjamin Daniels bbdaniels@gmail.com
 
 // sumstats - Stata module to produce tables of summart statistics
 
@@ -46,7 +46,10 @@ qui {
 			local justvars = substr("``i''",1,strpos("``i''"," if "))
 			local ifcond = `"Subsample: `ifcond'"'
 		}
-		else local ifcond "Full Sample"
+		else {
+      local ifcond "Full Sample"
+      local justvars = "``i''"
+    }
 		putexcel A`theRow' = "`ifcond'", bold
 
 		// Get statistics
