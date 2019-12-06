@@ -28,6 +28,3 @@
 [submodule "src/statflow"]
 	path = src/statflow
 	url = https://github.com/bbdaniels/statflow
-[submodule "specc"]
-	path = specc
-	url = https://github.com/bbdaniels/specc.git
