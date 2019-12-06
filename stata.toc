@@ -9,4 +9,5 @@ p knapsack knapsack
 p statflow statflow
 p betterbar betterbar
 p sumstats sumstats
+p specc specc
 p makeid makeid
