@@ -1,7 +1,7 @@
 // Create packages for all files
 
 // Set directory
-global directory "/Users/bbdaniels/GitHub/bbd-stata"
+global directory "/Users/bbdaniels/GitHub/stata-releases"
 cd "${directory}"
 
   // Remove TOC
