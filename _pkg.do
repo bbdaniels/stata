@@ -4,6 +4,10 @@
 global directory "/Users/bbdaniels/GitHub/stata-releases"
 cd "${directory}"
 
+  // Update submodules
+  !cd "${directory}"
+  !git submodule foreach --recursive git pull origin master
+
   // Remove TOC
   !rm "${directory}/stata.toc"
 

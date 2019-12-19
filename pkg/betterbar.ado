@@ -1,4 +1,4 @@
-//! version 1.4 31DEC2019  Benjamin Daniels bbdaniels@gmail.com
+//! version 1.5 31DEC2019  Benjamin Daniels bbdaniels@gmail.com
 
 // Betterbar - Stata module to produce bar graphs with standard error bars and cross-group comparisons.
 
@@ -137,14 +137,19 @@ marksample touse
 		gen so = 0
 		local item_n = -1
 		foreach item in `anything' {
-			replace so = `item_n' if substr(n,1,strpos(n,"_")-1) == "`item'"
+			replace so = `item_n' if substr(n,1,strrpos(n,"_")-1) == "`item'"
 			local --item_n
 		}
 
     tempvar overvar
     gen `overvar' = real(substr(n,-1,.))
 
-		gsort + `by' + so - `overvar' + n + order + `type'
+    if "`vertical'" != "" {
+      gsort + `by' + so + `overvar' + n + order + `type'
+    }
+    else {
+      gsort - `by' + so - `overvar' + n + order + `type'
+    }
 
 		keep if `type' == 1 | `type' == 5 | `type' == 6
 		gen place = _n - mod(_n,3)
@@ -206,13 +211,14 @@ marksample touse
 		if "`barlab'" != "" & "`ci'" == ""   & "`vertical'" == "" local blabplot "(scatter place stat_1  , m(none) mlab(lab) mlabpos(3) mlabc(black) )"
 		if "`barlab'" != "" & "`ci'" == "ci" & "`vertical'" != "" local blabplot "(scatter stat_6 place , m(none) mlab(lab) mlabpos(12) mlabc(black) )"
 		if "`barlab'" != "" & "`ci'" == ""   & "`vertical'" != "" local blabplot "(scatter stat_1 place , m(none) mlab(lab) mlabpos(12) mlabc(black) )"
+    if "`barlab'" != "" & "`ci'" == "ci" replace stat_6 = stat_1 if stat_6 == .
 
 		// Set up variable names
 
 		gen var = ""
 		foreach var in `anything' {
-			replace var = "``var''" if substr(n,1,strpos(n,"_")-1) == "`var'"
-			replace n = substr(n,strpos(n,"_")+1,.) if substr(n,1,strpos(n,"_")-1) == "`var'"
+			replace var = "``var''" if substr(n,1,strrpos(n,"_")-1) == "`var'"
+			replace n = substr(n,strrpos(n,"_")+1,.) if substr(n,1,strrpos(n,"_")-1) == "`var'"
 		}
 
 		// Gaps
