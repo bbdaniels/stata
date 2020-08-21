@@ -54,4 +54,9 @@ cd "${directory}"
   // Finish writing TOC
   file close toc
 
+// Close up repo
+  !git add -A
+  !git commit -m "Updated `c(current_date)' `c(current_time)'"
+  !git push origin
+
 // All packed!
