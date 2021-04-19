@@ -3,13 +3,15 @@
 
 cap prog drop intervals
 		prog def  intervals
-		syntax anything [if] [in] [pweight], [Binary]
+		syntax anything [if] [in] [pweight], [Binary] [Latex]
 			marksample touse
 			
 	preserve
 		qui keep if `touse'
 		
 	version 13
+  
+  if "`latex'" != "" local latex "\"
 			
 	if "`weight'" != "" qui svyset , clear
 	if "`weight'" != "" qui svyset [`weight' `exp']
@@ -33,7 +35,7 @@ cap prog drop intervals
 				local mu = string(round(`mu'*100,1))
 				local ll = string(round(`ll'*100,1))
 				local ul = string(round(`ul'*100,1))			
-				di in red "`theLabel': `yes' of `all' (`mu'%; 95% CI: `ll'–`ul')"
+				di in red "`theLabel': `yes' of `all' (`mu'`latex'%; 95`latex'% CI: `ll'–`ul')"
 			} // end binary option
 		else {
 			qui svy: mean `var'
@@ -47,7 +49,7 @@ cap prog drop intervals
 				local ul = substr(string(round(`ul'*100,1)/100),1,strpos(string(round(`ul'*100,1)/100),".")+2)
 				local ll = substr(string(round(`ll'*100,1)/100),1,strpos(string(round(`ll'*100,1)/100),".")+2)
 				
-				di in red "`theLabel': `mu' (95% CI: `ll'–`ul')"
+				di in red "`theLabel': `mu' (95`latex'% CI: `ll'–`ul')"
 			} // end continuous
 			
 		} // end weighted var-loop
@@ -65,7 +67,7 @@ cap prog drop intervals
 				local mu = string(round(`r(mean)'*100,1))
 				local ll = string(round(`r(lb)'*100,1))
 				local ul = string(round(`r(ub)'*100,1))			
-				di in red "`theLabel': `yes' of `all' (`mu'%; 95% CI: `ll'–`ul')"
+				di in red "`theLabel': `yes' of `all' (`mu'`latex'%; 95`latex'% CI: `ll'–`ul')"
 			} // end binary option
 		else {
 			qui ci `var'
@@ -73,7 +75,7 @@ cap prog drop intervals
 				local ul = substr(string(round(`r(ub)'*100,1)/100),1,strpos(string(round(`r(ub)'*100,1)/100),".")+2)
 				local ll = substr(string(round(`r(lb)'*100,1)/100),1,strpos(string(round(`r(lb)'*100,1)/100),".")+2)
 				
-				di in red "`theLabel': `mu' (95% CI: `ll'–`ul')"
+				di in red "`theLabel': `mu' (95`latex'% CI: `ll'–`ul')"
 			} // end continuous
 			
 		} // end unweighted var-loop
