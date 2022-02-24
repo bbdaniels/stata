@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Daniels"
+  given-names: "Benjamin"
+  orcid: "https://orcid.org/0000-0001-9652-6653"
+title: "Stata Packages for Research"
+doi: TBA
+date-released: 2020-02-24
+url: "https://github.com/bbdaniels/stata"
