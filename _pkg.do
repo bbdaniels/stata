@@ -6,7 +6,7 @@ cd "${directory}"
 
   // Update submodules
   !cd "${directory}"
-  !git submodule foreach --recursive git pull origin master
+  !git submodule foreach --recursive git pull origin main
 
   // Remove TOC
   !rm "${directory}/stata.toc"
