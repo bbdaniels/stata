@@ -1,4 +1,5 @@
 v 0.1
 d Benjamin Daniels
 f /pkg/forest.ado
+f /pkg/forest_power.ado
 f /pkg/forest.sthlp
