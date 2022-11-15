@@ -1,8 +1,8 @@
 
 * Manski simulations for treatment effect under adverse selection assumptions.
 
-cap prog drop manskiBounds
-prog def manskiBounds
+cap prog drop manski
+prog def manski
 
 syntax anything 			/// Specify full model
 	  [if] [in] 			///
@@ -119,7 +119,7 @@ syntax anything 			/// Specify full model
 	
 end
 
-* Demo 
+/* Demo 
 
 	clear
 	set obs 1000
@@ -139,4 +139,4 @@ end
 	graph export manskiBounds.png , replace
 
 
-* Have a lovely day!
+* Have a lovely day! */
