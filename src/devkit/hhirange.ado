@@ -79,8 +79,9 @@ qui forv i = 1/`N' {
   restore
 }
 
+preserve
 use `all' , clear
-graph box hhi, over(n)
+graph box hhi, over(n) yscale(log)
 
 end
 
