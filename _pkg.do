@@ -1,7 +1,7 @@
 // Create packages for all files
 
 // Set directory
-global directory "/Users/bbdaniels/GitHub/stata-releases"
+global directory "/Users/bbdaniels/GitHub/stata"
 cd "${directory}"
 
   // Update submodules
