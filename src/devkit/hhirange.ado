@@ -16,36 +16,34 @@ qui {
   set obs `nvars'
     gen n = _n
   tempfile v
-    save `v' , emptyok
+    save `v'
+    clear
 
   forv i = 1/`nvars' {
-    ren n n`i'
     cross using `v'
-  }
 
-  drop n
-  duplicates drop
-  tostring * , replace
-    forv i = 1/`nvars' {
-      replace n`i' = n`i' + "-"
+    tostring * , replace
+
+    forv j = 1/`nvars' {
+      replace n = " " + n + " "
+      replace n = subinstr(n," `j' ","``j'' ",.)
     }
 
-    egen list = concat(*)
+    cap egen list = concat(*)
+    if _rc != 0 replace list = list + n
 
-  forv i = 1/`nvars' {
-    replace list = subinstr(list,"`i'-","``i'' ",.)
+    forv i = 1/`c(N)' {
+      local list = list[`i']
+      local newlist : list uniq list
+      local newlist : list sort newlist
+      replace list = "`newlist'" in `i'
+    }
+
+    keep list
+    append using `all'
+      duplicates drop
+    save `all' , replace
   }
-
-  forv i = 1/`c(N)' {
-    local list = list[`i']
-    local newlist : list uniq list
-    local newlist : list sort newlist
-    replace list = "`newlist'" in `i'
-  }
-
-  keep list
-  sort list
-  duplicates drop
 
   local N = `c(N)'
 
@@ -59,8 +57,6 @@ restore
 // Get all the HHIs of variable combinations --------------------------
 
 tempname group n
-
-
 
 qui forv i = 1/`N' {
   local list : word `i' of `theLists'
