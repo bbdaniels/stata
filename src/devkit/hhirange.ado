@@ -3,7 +3,7 @@
 cap prog drop hhirange
 prog def hhirange
 
-syntax anything
+syntax anything , [*]
 local nvars : word count `anything'
 tokenize `anything'
 tempfile all
@@ -77,7 +77,20 @@ qui forv i = 1/`N' {
 
 preserve
 use `all' , clear
-graph box hhi, over(n) yscale(log)
+qui {
+tempfile a b
+
+tw scatter hhi n if n == 1 ///
+  , mlab(list) mlabc(black) m(none) mlabpos(0) yscale(log) saving(`a') ///
+    xtit("") xlab(1 "Components" , notick) fxsize(30) ///
+    ytit("Herfindahl–Hirschman Index (HHI)") nodraw
+
+graph box hhi, over(n) yscale(log) `options' saving(`b') fxsize(60) ///
+  yscale(alt) box(1 , fc(none) lc(black)) medtype(marker) marker(1,mlab(hhi)) nodraw ///
+  ytit("Herfindahl–Hirschman Index (HHI)")
+
+graph combine "`a'" "`b'" , ycom
+}
 
 end
 
