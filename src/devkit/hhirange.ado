@@ -67,7 +67,7 @@ qui forv i = 1/`N' {
   collapse (sum) `n' , by(`group')
   egen total = sum(`n')
   gen share2 = (`n'/total)^2
-  collapse (mean) hhi = share2
+  collapse (sum) hhi = share2
   gen list = "`list'"
   gen n = `: word count `list''
   append using `all'
