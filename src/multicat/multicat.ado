@@ -16,13 +16,13 @@ qui foreach var of varlist `anything' {
 	replace `generate' = `generate' + "`comma'`label'" if `var' == 1
 	local comma ", "
 	}
-	
+
 qui replace `generate' = regexr(`generate',"^,","")
 qui replace `generate' = "" if `touse' == 0
 
-ta `generate'
+ta `generate' , plot sort m
 
 if "`gen'" != "" gen `gen' = `generate'
 
-	
+
 end
