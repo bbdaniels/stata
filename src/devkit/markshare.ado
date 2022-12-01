@@ -137,26 +137,23 @@ preserve
     gsort -`n'
     gen `list' = _n
     save `groups' , replace
-    forv i = 1/`c(N)' {
-      local bars "`bars' bar(`i', fc(black) lc(white) lw(medthick) la(center)) "
-    }
 restore
   merge m:1 `anything' using `groups' , nogen
 
-gen `one' = 1
- graph hbar (sum) `one' , xoverhang scale(0.7) `bars' nodraw ///
-   over(`list') yvar(sort(1) descending) saving(`e') ytit("") ///
-   per asy stack yscale(noline) note("Market Composition {&rarr}" , pos(11)) fysize(20)
+  gen `one' = 1
+  graph hbar (sum) `one' , xoverhang scale(0.7) nodraw ///
+    over(`list') yvar(sort(1) descending) saving(`e') ytit("") ///
+    per asy stack yscale(noline) note("Market Composition {&rarr}" , pos(11)) fysize(20)
 
   replace `n' = `n' / `c(N)'
   replace `list' = 0 if `n' < `cutoff'
     replace `generate' = "All Other Combinations" if `list' == 0
+
   graph hbar if `list' != . , xoverhang ///
     yvar(sort(1) descending) bar(1, fc(black) lc(none)) ///
     over(`generate' , sort(1)) saving(`d')  ytit("") ///
     note("Market Share of Each Strategy with Share > `cutoff' {&rarr}" , pos(11)) asc scale(0.7) ///
     ylab(0 "0%" 25 "25%" 50 "50%" 75 "75%" 100 "100%" , notick) fysize(40) nodraw
-
 
   graph combine "`c'" "`e'" "`d'" , c(1) imargins(zero)
 }
