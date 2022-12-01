@@ -3,14 +3,32 @@
 cap prog drop hhirange
 prog def hhirange
 
-syntax anything , [*]
+syntax anything , [*] [tab] [gen(string asis)]
 local nvars : word count `anything'
 tokenize `anything'
 tempfile all
 
+// Implement tabulations ----------------------------------------------------
+
+  tempvar generate
+  gen `generate' = ""
+
+  qui foreach var of varlist `anything' {
+  	local label : var label `var'
+  	replace `generate' = `generate' + "`comma'`label'" if `var' == 1
+  	local comma ", "
+  	}
+
+  qui replace `generate' = regexr(`generate',"^,","")
+  qui replace `generate' = "None" if `generate' == ""
+
+  if "`tab'" != "" ta `generate' , plot sort
+  if "`gen'" != "" gen `gen' = `generate'
+
 // Get all the lists of variable combinations --------------------------
 preserve
 qui {
+  // Setup
   clear
   save `all' , emptyok
   set obs `nvars'
@@ -19,6 +37,7 @@ qui {
     save `v'
     clear
 
+  // Find all combinations
   forv i = 1/`nvars' {
     cross using `v'
 
@@ -45,12 +64,13 @@ qui {
     save `all' , replace
   }
 
+  // Pass information to plotting segment
   local N = `c(N)'
-
   forv i = 1/`c(N)' {
     local list = list[`i']
     local theLists = `"`theLists' "`list'""'
   }
+
 restore
 }
 
@@ -65,20 +85,26 @@ qui forv i = 1/`N' {
 
   gen `n' = 1
   collapse (sum) `n' , by(`group')
+    drop if `group' == .
+
   egen total = sum(`n')
   gen share2 = (`n'/total)^2
   collapse (sum) hhi = share2
   gen list = "`list'"
   gen n = `: word count `list''
+
   append using `all'
     save `all' , replace
   restore
 }
 
+// Plot statistics ----------------------------------------------------
+
+qui {
 preserve
 use `all' , clear
-qui {
-tempfile a b
+
+tempfile a b c d
 
 tw scatter hhi n if n == 1 ///
   , mlab(list) mlabc(black) m(none) mlabpos(0) yscale(log) saving(`a') ///
@@ -89,7 +115,16 @@ graph box hhi, over(n) yscale(log) `options' saving(`b') fxsize(60) ///
   yscale(alt) box(1 , fc(none) lc(black)) medtype(marker) marker(1,mlab(hhi)) nodraw ///
   ytit("Herfindahl–Hirschman Index (HHI)")
 
-graph combine "`a'" "`b'" , ycom
+graph combine "`a'" "`b'" , ycom saving(`c') nodraw
+
+restore
+tempvar list
+egen `list' = group(`anything')
+  drop if `list' == .
+   graph hbar (sum) n , xoverhang ///
+     over(`list') saving(`d') nodraw ytit(" ") ///
+     per asy stack pcycle(2) yscale(noline) ytit("Share of Market")
+   graph combine "`c'" "`d'" , c(1)
 }
 
 end
