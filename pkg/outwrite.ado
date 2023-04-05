@@ -31,7 +31,7 @@ if "`format'" == "" local format = "%9.2f"
 // Regressions setup
 if `: word count `anything'' >= 2 {
 
-	cap mat drop results 
+	cap mat drop results
   cap mat drop results_STARS
 	regprep `anything' , below `stats' `tstat' `pvalue' `keep'
 
@@ -58,7 +58,7 @@ if `: word count `anything'' >= 2 {
 		fvrevar `drop' , tsonly
 		local drop = subinstr("`r(varlist)'"," ","|",.)
 	}
-  
+
 	// Set final row names
 	local conscounter = 0
 	if !`RN_FLAG' local rownames ""
@@ -182,7 +182,7 @@ syntax anything using/ , ///
 	[format(integer 2)] ///
 	[rownames(string asis)] ///
 	[colnames(string asis)] ///
-	[replace] [sheet(passthru)] [modify] [ext(string asis)]
+	[replace] [sheet(passthru)] [modify] [ext(string asis)] [stats(string asis)]
 
 qui {
 
@@ -262,20 +262,20 @@ syntax ///
   [stats(string asis)] /// Get stats
   [STATFORMat(string asis)] /// Get stats formats
   [*]
-  
+
 	// Load matrix into Stata
 	preserve
 		clear
 		qui svmat `anything'
 		qui tostring * , force replace format(`format')
-    
+
     unab vars : *
 
 	// Remove blanks
 	qui foreach var of varlist * {
     replace `var' = "" if strpos(`var',".") == 1
 	}
-  
+
   // Adjust stat formats
   local nStat : word count `stats'
     forv i = `nStat'(-1)1 {
@@ -285,7 +285,7 @@ syntax ///
         replace `var' = string(real(`var'),"`sformat'") in `=c(N)-`i'+1'
       }
     }
-  
+
   // Remove blank rows
   egen TEMP = concat(*)
     gen TODROP = TEMP == ""
@@ -357,9 +357,9 @@ syntax ///
 			if "`bold'" != "nobold" replace `var' = "{\bf " + `var' + "}" in 1
       replace `var' = "\multicolumn{1}{p{0.13\linewidth}}{\centering{" + `var' + "}}" in 1
 		}
-        
+
     drop if TODROP == 1
-    
+
     // column numbering
     if "`numbering'" != "nonumbering" {
   		set obs `=`c(N)' + 1'
@@ -386,26 +386,26 @@ syntax ///
           if (a != "" & strpos(`var',".")) in 3/-`nStat'
       }
     }
-    
+
     // Additional parentheses
     if "`parentheses'" != "" {
       local parentheses = subinstr(trim(itrim("`parentheses'"))," ",",",.)
-      gen sort = _n - 2 
+      gen sort = _n - 2
       foreach var of varlist `anything'* {
         if "`stars'" == "nostars" ///
           replace `var' = "(" + `var' + ")" if inlist(sort,`parentheses')
         else ///
           replace `var' = "(" + subinstr(`var',"\phantom{***}",")\phantom{***}",.) ///
             if inlist(sort,`parentheses')
-      }      
+      }
       drop sort
-    } 
-    
+    }
+
     // Catch minus signs
     foreach var of varlist `anything'* {
       replace `var' = subinstr(`var',"-","$-$",.)
     }
-    
+
     // Stars gone
     if "`stars'" == "nostars" {
       foreach var of varlist `anything'* {
@@ -414,14 +414,14 @@ syntax ///
         replace `var' = subinstr(`var',"\phantom{}","",.)
       }
     }
-    
+
     // Prepare tex output
 		egen FINAL = concat(a `vars') , punct(" & ")
   		keep FINAL
   		replace FINAL = FINAL + " \\"
-    
+
 		gen sort = _n
-    
+
     // Find first statistic
     if "`stats'" != "" {
       local firstStat : word 1 of `stats'
@@ -442,19 +442,19 @@ syntax ///
 			   replace sort = 0.25 if sort == .
 			if "`stats'" != "" gsort + sort - false
         else gsort + sort
-  
+
     // Separator for statistics
     if "`stats'" != "" {
    		replace FINAL = "\hline" if false == 1
       drop false
     }
-    
+
     // Header
 		if "`stars'" == "nostars" replace FINAL = "\begin{tabular}{@{\extracolsep{5pt}}lccccccccccccc}" in 1
       else replace FINAL = "\begin{tabular}{@{\extracolsep{5pt}}lrrrrrrrrrrrrrrr}" in 1
 		replace FINAL = "\toprule" in 2
-		replace FINAL = "\hline" in 5    
-    
+		replace FINAL = "\hline" in 5
+
     // Additional lines
     if `"`addlines'"' != "" {
       parenParse `addlines'
@@ -466,7 +466,7 @@ syntax ///
         replace FINAL = "{" + subinstr(FINAL,`"""',`""',.) + "}} \\" in `c(N)'
       }
     }
-    
+
     // Additional dividers
     if "`hlines'" != "" {
       local hlines = subinstr(trim(itrim("`hlines'"))," ",",",.)
@@ -475,15 +475,15 @@ syntax ///
       sort sort false
       replace FINAL = "\hline" if false == 1
       drop false
-    }  
-    
+    }
+
     // Footer
     set obs `=`c(N)'+2'
 		replace FINAL = "\hline" in `=`c(N)'-1'
 		replace FINAL = "\end{tabular}" in `c(N)'
 		drop sort
 	}
-   
+
 	// Write
 	if inlist("`ext'","tex","csv") outsheet `using' , `c' `replace' noq non
 		else export excel `using' , `replace'
