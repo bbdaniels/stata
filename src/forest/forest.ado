@@ -11,6 +11,7 @@ syntax anything /// syntax – forest command (d1 d2) [(d3)]
   , ///
     RHS(string asis) /// Open-ended to allow things like ivregress inputs
     [REGopts(string asis)] /// Any variable list of controls
+    [NIXdepvar] /// remove depvar for advanced programming
     [or] /// odds-ratios: passes to regression command and orders log scale on chart
     [d]  /// cohen's d: standardizes all dependent variables before regression
     [mde] /// plot minimum detectable effects (based on Bonferroni)
@@ -100,6 +101,7 @@ forvalues i = 1/`nStrings' {
 
     // Replace any self-referenced controls here
     local theseControls = subinstr("`rhs'","@","`1'",.)
+    if "`nixdepvar'" != "" local 1 ""
 
     // Regression
     `cmd' `1' ///
