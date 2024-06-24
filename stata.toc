@@ -3,6 +3,7 @@ d Benjamin Daniels
 p dta2kml dta2kml
 p outwrite outwrite
 p forest forest
+p bivreg bivreg
 p rencode rencode
 p easyirt easyirt
 p multicat multicat
