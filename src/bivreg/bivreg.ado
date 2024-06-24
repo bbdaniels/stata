@@ -3,7 +3,7 @@
 cap prog drop bivreg
 prog def bivreg , eclass
 
-syntax varlist [if] [in], Indepvar(varlist) *
+syntax varlist [if] [in], Depvar(varlist) *
 
   marksample touse
 
@@ -17,7 +17,7 @@ syntax varlist [if] [in], Indepvar(varlist) *
   local x = 0
   qui foreach var in `varlist' {
     local ++x
-    reg `indepvar' `var' if `touse' , `options'
+    reg `depvar' `var' if `touse' , `options'
     mat `mb' = nullmat(`mb') , _b[`var']
     mat `mv'[`x',`x'] =  e(V)[1,1]
   }
