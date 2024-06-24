@@ -27,7 +27,8 @@ syntax varlist [if] [in], Depvar(varlist) *
   mat rownames `mv' = `varlist'
   ereturn clear
 
-  ereturn post `mb' `mv' , esample(`touse')
+  reg `depvar' `varlist' , nocons
+  ereturn repost b = `mb' V = `mv' , rename 
 
 end
 
