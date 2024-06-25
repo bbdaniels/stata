@@ -1,9 +1,9 @@
-// Produces formatted Binary regression tables.
+// Produces formatted Bivariate regression tables.
 
 cap prog drop bivreg
 prog def bivreg , eclass
 
-syntax varlist [if] [in], Depvar(varlist) *
+syntax varlist [if] [in], * [Controls(string asis)]
 
   marksample touse
 
@@ -12,12 +12,15 @@ syntax varlist [if] [in], Depvar(varlist) *
 
   cap mat drop `mb' `mv'
 
+  local depvar : word 1 of `varlist'
+  local varlist = subinstr("`varlist'","`depvar'","",1)
+
   local v : word count `varlist'
   mat `mv' = J(`v',`v',0)
   local x = 0
   qui foreach var in `varlist' {
     local ++x
-    reg `depvar' `var' if `touse' , `options'
+    reg `depvar' `var' `controls' if `touse' , `options'
     mat `mb' = nullmat(`mb') , _b[`var']
     mat `mv'[`x',`x'] =  e(V)[1,1]
   }
@@ -27,8 +30,10 @@ syntax varlist [if] [in], Depvar(varlist) *
   mat rownames `mv' = `varlist'
   ereturn clear
 
-  reg `depvar' `varlist' , nocons
-  ereturn repost b = `mb' V = `mv' , rename 
+  qui reg `depvar' `varlist' , nocons
+  ereturn repost b = `mb' V = `mv' , rename
+  ereturn scalar r2 = .
+  ereturn scalar r2_a = .
 
 end
 
