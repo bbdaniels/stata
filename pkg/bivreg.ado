@@ -30,7 +30,7 @@ syntax varlist [if] [in], * [Controls(string asis)]
   mat rownames `mv' = `varlist'
   ereturn clear
 
-  qui reg `depvar' `varlist' , nocons
+  qui reg `depvar' `varlist' if `touse' , nocons
   ereturn repost b = `mb' V = `mv' , rename
   ereturn scalar r2 = .
   ereturn scalar r2_a = .
