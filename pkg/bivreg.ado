@@ -8,7 +8,7 @@ syntax varlist [if] [in], * [Controls(string asis)] [Listwise]
   marksample touse
 
   if "`listwise'" != "" {
-    qui reg `depvar' `varlist' if `touse' , nocons
+    qui reg `depvar' `varlist' `controls' if `touse' , nocons
     qui replace `touse' = 0 if !e(sample)
   }
 
@@ -35,7 +35,7 @@ syntax varlist [if] [in], * [Controls(string asis)] [Listwise]
   mat rownames `mv' = `varlist'
   ereturn clear
 
-  qui reg `depvar' `varlist' if `touse' , nocons
+  qui reg `depvar' `varlist' `controls' if `touse' , nocons
   ereturn repost b = `mb' V = `mv' , rename
   ereturn scalar r2 = .
   ereturn scalar r2_a = .
