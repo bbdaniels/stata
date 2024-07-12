@@ -3,9 +3,14 @@
 cap prog drop bivreg
 prog def bivreg , eclass
 
-syntax varlist [if] [in], * [Controls(string asis)]
+syntax varlist [if] [in], * [Controls(string asis)] [Listwise]
 
   marksample touse
+
+  if "`listwise'" != "" {
+    qui reg `depvar' `varlist' if `touse' , nocons
+    qui replace `touse' = 0 if !e(sample)
+  }
 
   tempname mb
   tempname mv
@@ -34,6 +39,7 @@ syntax varlist [if] [in], * [Controls(string asis)]
   ereturn repost b = `mb' V = `mv' , rename
   ereturn scalar r2 = .
   ereturn scalar r2_a = .
+  if "`listwise'" == "" ereturn scalar N = .
 
 end
 
