@@ -10,6 +10,7 @@ syntax varlist [if] [in], * [Controls(string asis)] [Listwise]
   if "`listwise'" != "" {
     qui reg `depvar' `varlist' `controls' if `touse' , nocons
     qui replace `touse' = 0 if !e(sample)
+    local N = r(N)
   }
 
   tempname mb
@@ -35,11 +36,12 @@ syntax varlist [if] [in], * [Controls(string asis)] [Listwise]
   mat rownames `mv' = `varlist'
   ereturn clear
 
-  qui reg `depvar' `varlist' `controls' if `touse' , nocons
+  qui reg `depvar' `varlist' if `touse' , nocons
   ereturn repost b = `mb' V = `mv' , rename
   ereturn scalar r2 = .
   ereturn scalar r2_a = .
   if "`listwise'" == "" ereturn scalar N = .
+    else ereturn scalar N = `N'
 
 end
 
