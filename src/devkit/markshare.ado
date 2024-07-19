@@ -4,6 +4,7 @@ cap prog drop markshare
 prog def markshare , rclass
 
 syntax anything [if] [in] , [*] [tab] [cutoff(real 0.05)]
+unab anything : `anything'
 local nvars : word count `anything'
 tokenize `anything'
 tempfile all
