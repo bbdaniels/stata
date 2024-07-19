@@ -125,7 +125,7 @@ use `all' , clear
 graph box hhi, over(n) yscale(log) `options' saving(`b') fxsize(60) ///
   yscale(alt) box(1 , fc(none) lc(black)) medtype(marker)  nodraw ///
   ytit("Herfindahl–Hirschman Index (HHI)") noout note("Number of Components Included {&rarr}" , pos(11)) ///
-  ylab(0.125 "125" 0.25 "250" 0.5 "500" 1 "1000") yscale(r(0.125)) scale(0.7)
+  ylab(0.125 "125" 0.25 "250" 0.5 "500" 1 "1000") yscale(r(0.125)) scale(0.7) legend(off)
 
 graph combine "`a'" "`b'" , ycom saving(`c') nodraw  fysize(40)
 restore
