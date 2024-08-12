@@ -3,9 +3,10 @@
 cap prog drop bivreg
 prog def bivreg , eclass
 
-syntax varlist [if] [in], * [Controls(string asis)] [Listwise]
+syntax anything [if] [in], * [Controls(string asis)] [Listwise]
 
   marksample touse
+  local varlist `anything'
 
   if "`listwise'" != "" {
     qui reg `depvar' `varlist' `controls' if `touse' , nocons
