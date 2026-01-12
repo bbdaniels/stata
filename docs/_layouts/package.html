@@ -1,0 +1,29 @@
+---
+layout: default
+---
+
+<article class="package-page">
+  <div class="package-header">
+    <h1>{{ page.title }}</h1>
+    <p class="package-tagline">{{ page.tagline }}</p>
+    <div class="package-meta">
+      <span class="category">{{ page.category }}</span>
+      {% if page.github %}
+      <a href="{{ page.github }}" class="github-link">View on GitHub</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install {{ page.package_name }}, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    {{ content }}
+  </div>
+
+  <div class="package-footer">
+    <a href="{{ '/packages/' | relative_url }}">&larr; Back to all packages</a>
+  </div>
+</article>

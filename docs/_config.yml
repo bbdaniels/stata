@@ -1,0 +1,38 @@
+title: Stata Packages for Research
+description: A collection of Stata packages for research, data analysis, and visualization
+author: Benjamin Daniels
+email: bbdaniels@gmail.com
+url: "https://bbdaniels.github.io"
+baseurl: "/stata"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Collections for package documentation
+collections:
+  packages:
+    output: true
+    permalink: /packages/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "packages"
+    values:
+      layout: "package"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+
+# Include package files
+include:
+  - _packages
