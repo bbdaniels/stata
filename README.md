@@ -50,6 +50,7 @@ net install forest, from("https://raw.githubusercontent.com/bbdaniels/stata/main
 | **[sumstats](https://bbdaniels.github.io/stata/packages/sumstats)** | Summary statistics tables with conditional restrictions |
 | **[tabstatout](https://bbdaniels.github.io/stata/packages/tabstatout)** | Summary statistics tables with export capability |
 | **[weightab](https://bbdaniels.github.io/stata/packages/weightab)** | Weighted cross-group comparison tables |
+| **[bintab](https://bbdaniels.github.io/stata/packages/bintab)** | Binary proportions and population estimates |
 | **[statflow](https://bbdaniels.github.io/stata/packages/statflow)** | Dynamic flowcharts and tables in Excel |
 
 ### Data Management

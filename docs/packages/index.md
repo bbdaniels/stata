@@ -88,6 +88,12 @@ Browse all available Stata packages. Click any package for detailed documentatio
     <span class="category">Regression</span>
   </a>
 
+  <a href="{{ '/packages/bintab/' | relative_url }}" class="package-card" data-category="tables" data-name="bintab">
+    <h3>bintab</h3>
+    <p>Binary proportions and population estimates across groups.</p>
+    <span class="category">Tables</span>
+  </a>
+
   <a href="{{ '/packages/sumstats/' | relative_url }}" class="package-card" data-category="tables" data-name="sumstats">
     <h3>sumstats</h3>
     <p>Summary statistics tables with conditional if-restrictions.</p>

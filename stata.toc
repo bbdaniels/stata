@@ -28,3 +28,4 @@ p tabgen tabgen
 p specc specc
 p tabstatout tabstatout
 p makeid makeid
+p bintab bintab

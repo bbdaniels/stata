@@ -61,7 +61,7 @@ net install packagename, from("https://raw.githubusercontent.com/bbdaniels/stata
 </div>
 
 <p style="text-align: center; margin-top: 2rem;">
-  <a href="{{ '/packages/' | relative_url }}" class="btn btn-primary">View All 28 Packages</a>
+  <a href="{{ '/packages/' | relative_url }}" class="btn btn-primary">View All 29 Packages</a>
 </p>
 
 ## Citation

@@ -57,7 +57,19 @@ qui {
 	
 	tempfile data
 		save `data', replace
-	
+
+* Capture the over variable's value labels ONCE, in ascending code order, from
+* the data itself. Modern Stata (16+) no longer returns e(over_labels) after
+* svy: mean , over(), so the old label-fill loop left every `over' empty, which
+* made egen group(over) all-missing and broke the reshape at j(overgroup).
+
+	local ovvar `over'
+	local ovlab : value label `ovvar'
+	levelsof `ovvar' , local(ovlevels)
+	foreach lev in `ovlevels' {
+		local ovtext`lev' : label `ovlab' `lev'
+		}
+
 * Loop over variables
 
 	qui foreach var in `anything' {
@@ -77,9 +89,8 @@ qui {
 			gen varname = "`var'"
 			gen over = ""
 				local x = 1
-				local overlist `"`e(over_labels)'"'
-				foreach group in `overlist' {
-					replace over = "`group'" in `x'
+				foreach lev in `ovlevels' {
+					replace over = "`ovtext`lev''" in `x'
 					local ++x
 					}
 		
