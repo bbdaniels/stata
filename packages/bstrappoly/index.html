@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bstrappoly | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>bstrappoly</h1>
+    <p class="package-tagline">Bootstrapped confidence intervals for local polynomial regression</p>
+    <div class="package-meta">
+      <span class="category">Visualization</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install bstrappoly, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">bstrappoly</code> generates a bootstrapped 95% confidence interval for local polynomial regression (<code class="language-plaintext highlighter-rouge">tw lpoly</code>). It can combine the confidence band with other two-way plots and an underlying histogram.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bstrappoly</span><span class="w"> </span><span class="p">[</span><span class="n">other_plots</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">],</span>
+<span class="w">    </span><span class="n">bootstrap</span><span class="p">(</span><span class="n">yvar</span><span class="w"> </span><span class="n">xvar</span><span class="p">)</span>
+<span class="w">    </span><span class="p">[</span><span class="n">seed</span><span class="p">(</span><span class="kt">integer</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">reps</span><span class="p">(</span><span class="kt">integer</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">boptions</span><span class="p">(</span><span class="n">bootstrap_options</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">lpolyoptions</span><span class="p">(</span><span class="n">tw_line_options</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">cioptions</span><span class="p">(</span><span class="n">tw_rarea_options</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">histogram</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">hoptions</span><span class="p">(</span><span class="n">histogram_options</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">twoway_options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bootstrap(y x)</code></td>
+      <td>Variables for local polynomial regression</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">seed()</code></td>
+      <td>Random seed for reproducibility</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">reps()</code></td>
+      <td>Number of bootstrap replications</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boptions()</code></td>
+      <td>Options passed to bootstrap</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">lpolyoptions()</code></td>
+      <td>Options for lpoly line</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cioptions()</code></td>
+      <td>Options for CI area</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">histogram()</code></td>
+      <td>Add histogram of specified variable</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">hoptions()</code></td>
+      <td>Histogram formatting options</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

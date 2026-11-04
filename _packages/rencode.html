@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rencode | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>rencode</h1>
+    <p class="package-tagline">Encode string variables in place</p>
+    <div class="package-meta">
+      <span class="category">Data Management</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install rencode, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">rencode</code> encodes string variables and replaces them with the encoded numeric version, preserving the variable name.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rencode</span><span class="w"> </span><span class="n">string_varlist</span>
+</code></pre></div></div>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Standard encode requires a new variable name</span>
+<span class="k">encode</span><span class="w"> </span><span class="n">mystring</span><span class="p">,</span><span class="w"> </span><span class="n">gen</span><span class="p">(</span><span class="n">mystring_num</span><span class="p">)</span>
+
+<span class="c1">* rencode replaces in place</span>
+<span class="n">rencode</span><span class="w"> </span><span class="n">mystring</span>
+<span class="c1">* mystring is now numeric with value labels</span>
+</code></pre></div></div>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

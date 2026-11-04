@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>manski | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>manski</h1>
+    <p class="package-tagline">Manski bounds for selection bias</p>
+    <div class="package-meta">
+      <span class="category">Regression & Analysis</span>
+      
+      <a href="https://github.com/bbdaniels/manski" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install manski, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">manski</code> implements Manski bounding simulations as described in Andrabi and Das (2017). For a binary treatment and binary outcome variable, the command performs “extreme” bounds analysis where all missing observations are assigned outcomes that would produce the least significant treatment effect.</p>
+
+<p>The simulation relaxes this assumption by varying the “bounding fraction” until outcome simulation is random in both treatment and control groups, which induces measurement error proportional to the number of missing values.</p>
+
+<p>The output graph shows:</p>
+<ul>
+  <li>The relaxation process</li>
+  <li>Bounding fractions at which p&lt;0.01 and p&lt;0.05 are attained</li>
+  <li>The estimated effect from the original model on non-missing data</li>
+</ul>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">manski</span><span class="w"> </span><span class="n">regression_model</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">],</span>
+<span class="w">    </span><span class="n">treatment</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span><span class="w"> </span><span class="n">outcome</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span><span class="w"> </span><span class="n">seed</span><span class="p">(</span><span class="kt">integer</span><span class="p">)</span>
+<span class="w">    </span><span class="p">[</span><span class="n">regression_options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="requirements">Requirements</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">treatment</code> and <code class="language-plaintext highlighter-rouge">outcome</code> must be binary variables</li>
+  <li><code class="language-plaintext highlighter-rouge">treatment</code> must be the first variable in the regression</li>
+  <li>The regression command must produce standard results (as in <code class="language-plaintext highlighter-rouge">regress</code>)</li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">clear</span>
+<span class="k">set</span><span class="w"> </span><span class="n">obs</span><span class="w"> </span><span class="m">1000</span>
+<span class="kt">matrix</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">-.5</span><span class="p">,</span><span class="m">0</span><span class="w"> </span><span class="o">\</span><span class="w"> </span><span class="m">-.5</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">.4</span><span class="w"> </span><span class="o">\</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="m">.4</span><span class="p">,</span><span class="m">1</span><span class="p">)</span>
+<span class="n">corr2data</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="nf">corr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+<span class="k">replace</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span>
+<span class="k">replace</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0</span>
+<span class="k">replace</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span>
+<span class="k">replace</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0</span>
+<span class="k">replace</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">.5</span>
+
+<span class="n">manski</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="n">o</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">graph</span><span class="w"> </span><span class="n">export</span><span class="w"> </span><span class="n">manski</span><span class="o">.</span><span class="n">png</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span>
+</code></pre></div></div>
+
+<h2 id="references">References</h2>
+
+<p>Andrabi, T. &amp; Das, J. (2017). “In Aid We Trust: Hearts and Minds and the Pakistan Earthquake of 2005.” <em>The Review of Economics and Statistics</em>, 99(3), 371-386.</p>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

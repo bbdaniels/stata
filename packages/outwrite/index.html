@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>outwrite | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>outwrite</h1>
+    <p class="package-tagline">Export regression results to Excel, CSV, or LaTeX</p>
+    <div class="package-meta">
+      <span class="category">Regression & Analysis</span>
+      
+      <a href="https://github.com/bbdaniels/outwrite" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install outwrite, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">outwrite</code> reads multiple regressions saved with <code class="language-plaintext highlighter-rouge">estimates store</code>, consolidates them into a single table, and exports the results to Excel (.xlsx, .xls), CSV, or LaTeX (.tex) files.</p>
+
+<p>As a programming command, it can also accept a single matrix and export it directly. It will look for a corresponding <code class="language-plaintext highlighter-rouge">matrix_STARS</code> matrix to affix significance stars to each cell.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">outwrite</span><span class="w"> </span><span class="n">estimates_1</span><span class="w"> </span><span class="n">estimates_2</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"/path/to/output.[xlsx|xls|csv|tex]"</span><span class="w"> </span><span class="p">,</span>
+<span class="w">    </span><span class="p">[</span><span class="n">replace</span><span class="w"> </span><span class="n">stats</span><span class="p">()</span><span class="w"> </span><span class="n">drop</span><span class="p">(</span><span class="kt">varlist</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">tstat</span><span class="o">|</span><span class="n">pvalue</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">format</span><span class="p">(</span><span class="n">format</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">sheet</span><span class="p">(</span><span class="n">sheetname</span><span class="w"> </span><span class="p">[,</span><span class="n">replace</span><span class="p">])</span><span class="w"> </span><span class="n">modify</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">rownames</span><span class="p">(</span><span class="s2">"list"</span><span class="w"> </span><span class="s2">"of"</span><span class="w"> </span><span class="s2">"names"</span><span class="p">)</span><span class="w"> </span><span class="n">colnames</span><span class="p">(</span><span class="s2">"list"</span><span class="w"> </span><span class="s2">"of"</span><span class="w"> </span><span class="s2">"names"</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">replace</code></td>
+      <td>Overwrite the output file if it exists</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stats()</code></td>
+      <td>Add statistics from <code class="language-plaintext highlighter-rouge">e()</code> at the bottom (e.g., N, r2)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">drop(varlist)</code></td>
+      <td>Suppress reporting of specified variables</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tstat</code></td>
+      <td>Report t-statistics instead of standard errors</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pvalue</code></td>
+      <td>Report p-values instead of standard errors</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">format(format)</code></td>
+      <td>Format table values (default: %9.2f)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sheet()</code></td>
+      <td>Place results in a target sheet (.xlsx only)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">modify</code></td>
+      <td>Modify existing file (use with <code class="language-plaintext highlighter-rouge">sheet()</code>)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rownames()</code></td>
+      <td>Manually rename rows</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">colnames()</code></td>
+      <td>Manually rename columns</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Load data and run regressions</span>
+<span class="k">sysuse</span><span class="w"> </span><span class="n">auto</span><span class="o">.</span><span class="n">dta</span><span class="p">,</span><span class="w"> </span><span class="n">clear</span>
+<span class="k">reg</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">i.</span><span class="n">foreign</span><span class="o">##c.</span><span class="n">mpg</span>
+<span class="n">est</span><span class="w"> </span><span class="n">sto</span><span class="w"> </span><span class="n">reg1</span>
+
+<span class="k">reg</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">i.</span><span class="n">foreign</span><span class="o">##c.</span><span class="n">mpg</span><span class="o">##i.</span><span class="n">rep78</span>
+<span class="n">est</span><span class="w"> </span><span class="n">sto</span><span class="w"> </span><span class="n">reg2</span>
+<span class="n">estadd</span><span class="w"> </span><span class="kt">scalar</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="k">reg</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">i.</span><span class="n">rep78</span>
+<span class="n">est</span><span class="w"> </span><span class="n">sto</span><span class="w"> </span><span class="n">reg3</span>
+<span class="n">estadd</span><span class="w"> </span><span class="kt">scalar</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span>
+
+<span class="c1">* Export to Excel</span>
+<span class="n">outwrite</span><span class="w"> </span><span class="n">reg1</span><span class="w"> </span><span class="n">reg2</span><span class="w"> </span><span class="n">reg3</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"test.xlsx"</span><span class="w"> </span><span class="c1">///</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="n">r2</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="c1">///</span>
+<span class="w">    </span><span class="n">col</span><span class="p">(</span><span class="s2">"TEST"</span><span class="w"> </span><span class="s2">"(2)"</span><span class="p">)</span><span class="w"> </span><span class="n">drop</span><span class="p">(</span><span class="o">i.</span><span class="n">rep78</span><span class="p">)</span><span class="w"> </span><span class="n">format</span><span class="p">(</span><span class="py">%9.3f)</span>
+</code></pre></div></div>
+
+<h2 id="output-formats">Output Formats</h2>
+
+<ul>
+  <li><strong>Excel (.xlsx, .xls)</strong>: Full formatting support with sheet options</li>
+  <li><strong>CSV (.csv)</strong>: Plain text, importable anywhere</li>
+  <li><strong>LaTeX (.tex)</strong>: Publication-ready table code</li>
+</ul>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+
+<p>While the concept of <code class="language-plaintext highlighter-rouge">outwrite</code> is original, core functionality was borrowed from <code class="language-plaintext highlighter-rouge">xml_tab</code> by Zurab Sajaia and Michael Lokshin. Many ideas came from programs such as <code class="language-plaintext highlighter-rouge">estout</code> (Ben Jann), <code class="language-plaintext highlighter-rouge">outreg</code> (John Luke Gallup), <code class="language-plaintext highlighter-rouge">outreg2</code> (Roy Wada), and others.</p>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

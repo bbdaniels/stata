@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>makeid | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>makeid</h1>
+    <p class="package-tagline">Generate unique hierarchical IDs</p>
+    <div class="package-meta">
+      <span class="category">Data Management</span>
+      
+      <a href="https://github.com/bbdaniels/makeid" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install makeid, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">makeid</code> creates unique IDs for every observation based on hierarchical strata variables. IDs are coded and nested so that higher-level codes are unique across the dataset while lower-level codes are unique within their parent groups.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">makeid</span><span class="w"> </span><span class="kt">varlist</span><span class="p">,</span><span class="w"> </span><span class="n">generate</span><span class="p">(</span><span class="n">newvarname</span><span class="p">)</span><span class="w"> </span><span class="n">project</span><span class="p">(</span><span class="n">Project</span><span class="w"> </span><span class="n">Name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="how-it-works">How It Works</h2>
+
+<p>Given a variable list like <code class="language-plaintext highlighter-rouge">country state district name</code>:</p>
+
+<ol>
+  <li>Country code is fully unique</li>
+  <li>State code is unique within country</li>
+  <li>District code is unique within country+state</li>
+  <li>Name code is unique within country+state+district</li>
+</ol>
+
+<p>The ID is prefixed with the first letter of the project name to prevent automatic conversion to numbers in Excel.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sysuse</span><span class="w"> </span><span class="n">auto</span><span class="o">.</span><span class="n">dta</span><span class="p">,</span><span class="w"> </span><span class="n">clear</span>
+<span class="n">makeid</span><span class="w"> </span><span class="n">foreign</span><span class="w"> </span><span class="n">make</span><span class="p">,</span><span class="w"> </span><span class="n">gen</span><span class="p">(</span><span class="n">uniqueid</span><span class="p">)</span><span class="w"> </span><span class="n">project</span><span class="p">(</span><span class="n">Demo</span><span class="p">)</span>
+<span class="k">isid</span><span class="w"> </span><span class="n">uniqueid</span><span class="p">,</span><span class="w"> </span><span class="n">sort</span>
+<span class="k">list</span><span class="w"> </span><span class="n">foreign</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">uniqueid</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">/</span><span class="m">5</span>
+
+<span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">foreign</span><span class="w">   </span><span class="n">make</span><span class="w">          </span><span class="n">uniqueid</span><span class="w"> </span><span class="o">|</span>
+<span class="w">     </span><span class="o">|----------------------------------|</span>
+<span class="w">  </span><span class="m">1</span><span class="o">.</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Domestic</span><span class="w">  </span><span class="n">AMC</span><span class="w"> </span><span class="n">Concord</span><span class="w">   </span><span class="n">D</span><span class="m">-0-00</span><span class="w">   </span><span class="o">|</span>
+<span class="w">  </span><span class="m">2</span><span class="o">.</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Domestic</span><span class="w">  </span><span class="n">AMC</span><span class="w"> </span><span class="n">Pacer</span><span class="w">     </span><span class="n">D</span><span class="m">-0-01</span><span class="w">   </span><span class="o">|</span>
+<span class="w">  </span><span class="m">3</span><span class="o">.</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Domestic</span><span class="w">  </span><span class="n">AMC</span><span class="w"> </span><span class="n">Spirit</span><span class="w">    </span><span class="n">D</span><span class="m">-0-02</span><span class="w">   </span><span class="o">|</span>
+<span class="w">  </span><span class="m">4</span><span class="o">.</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Domestic</span><span class="w">  </span><span class="n">Buick</span><span class="w"> </span><span class="n">Century</span><span class="w"> </span><span class="n">D</span><span class="m">-0-03</span><span class="w">   </span><span class="o">|</span>
+<span class="w">  </span><span class="m">5</span><span class="o">.</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Domestic</span><span class="w">  </span><span class="n">Buick</span><span class="w"> </span><span class="n">Electra</span><span class="w"> </span><span class="n">D</span><span class="m">-0-04</span><span class="w">   </span><span class="o">|</span>
+</code></pre></div></div>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>freeshape | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>freeshape</h1>
+    <p class="package-tagline">Flexible reshape without numbered stubs</p>
+    <div class="package-meta">
+      <span class="category">Data Management</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install freeshape, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">freeshape</code> reshapes any variable list to long format without requiring numbered variable stubs (like <code class="language-plaintext highlighter-rouge">var1</code>, <code class="language-plaintext highlighter-rouge">var2</code>, etc.). It generates a sequenced ID and preserves original variable information.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">freeshape</span><span class="w"> </span><span class="kt">varlist</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">(</span><span class="n">id_varlist</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="p">(</span><span class="n">newvar_stub</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="generated-variables">Generated Variables</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">j_index</code></td>
+      <td>Sequential ID for reshaped observations</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">j_name</code></td>
+      <td>Original variable name</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">j_label</code></td>
+      <td>Original variable label</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">j_value</code></td>
+      <td>Variable value</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Original wide data with non-numbered variables</span>
+<span class="k">sysuse</span><span class="w"> </span><span class="n">auto</span><span class="p">,</span><span class="w"> </span><span class="n">clear</span>
+<span class="n">freeshape</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="n">mpg</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">(</span><span class="n">make</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="p">(</span><span class="n">measure</span><span class="p">)</span>
+
+<span class="c1">* Result: long format with measure_index, measure_name, etc.</span>
+</code></pre></div></div>
+
+<h2 id="when-to-use">When to Use</h2>
+
+<ul>
+  <li>Variables aren’t named with numeric suffixes</li>
+  <li>You want to preserve variable metadata</li>
+  <li>Standard <code class="language-plaintext highlighter-rouge">reshape</code> syntax is cumbersome</li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

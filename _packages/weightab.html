@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>weightab | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>weightab</h1>
+    <p class="package-tagline">Weighted cross-group comparison tables</p>
+    <div class="package-meta">
+      <span class="category">Summary Statistics & Tables</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install weightab, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">weightab</code> produces Excel tables and/or bar graphs with weighted cross-group comparisons. Calculations are based on <code class="language-plaintext highlighter-rouge">svy: mean</code> using supplied weights.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">weightab</span><span class="w"> </span><span class="kt">varlist</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">using</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">weight</span><span class="p">],</span>
+<span class="w">    </span><span class="n">over</span><span class="p">(</span><span class="kt">varlist</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="n">options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<h3 id="primary-options">Primary Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">over(varlist)</code></td>
+      <td>Grouping variables (values should be labeled)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">weight</code></td>
+      <td>Weight variable (pweights only)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="xlsx-options">XLSX Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">using</code></td>
+      <td>Export to specified spreadsheet</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stats()</code></td>
+      <td>Statistics to report: b, se, t, pvalue, ll, ul, df, crit</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="graph-options">Graph Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">graph</code></td>
+      <td>Request bar graph</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">se</code></td>
+      <td>Show 95% CIs around estimates</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">dropzero</code></td>
+      <td>Exclude bars with b=0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">barlook()</code></td>
+      <td>Bar styling options</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

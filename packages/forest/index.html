@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>forest | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>forest</h1>
+    <p class="package-tagline">Forest plots visualizing results from multiple regressions</p>
+    <div class="package-meta">
+      <span class="category">Visualization</span>
+      
+      <a href="https://github.com/bbdaniels/forest" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install forest, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">forest</code> visualizes results from multiple regressions on a single independent variable. The resulting “forest”-style chart shows the effect of a single “treatment” variable of interest on some set of dependent variables.</p>
+
+<p>It can display:</p>
+<ul>
+  <li>Raw coefficients</li>
+  <li>Standardized effect sizes (Cohen’s <em>d</em>)</li>
+  <li>Odds ratios (from logistic regressions)</li>
+</ul>
+
+<p>It can also make corrections to confidence intervals or significance estimates for family-wise error control using Bonferroni or Benjamini-Hochberg methods.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">forest</span><span class="w"> </span><span class="n">estimator</span><span class="w"> </span><span class="p">(</span><span class="n">depvar</span><span class="w"> </span><span class="n">family</span><span class="p">)</span><span class="w"> </span><span class="p">[(</span><span class="n">depvar</span><span class="w"> </span><span class="n">family</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">weight</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">]</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">rhs</span><span class="p">(</span><span class="kt">varlist</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="n">regopts</span><span class="p">(</span><span class="n">estimation</span><span class="w"> </span><span class="n">options</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">or</span><span class="o">|</span><span class="n">d</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">bonferroni</span><span class="o">|</span><span class="n">bh</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">mde</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">critical</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">sort</span><span class="p">(</span><span class="kt">local</span><span class="o">|</span><span class="kt">global</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">graphopts</span><span class="p">(</span><span class="n">twoway_options</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<h3 id="required-inputs">Required Inputs</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">estimator</code></td>
+      <td>The estimation command to use (e.g., <code class="language-plaintext highlighter-rouge">reg</code>, <code class="language-plaintext highlighter-rouge">logit</code>)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">(depvar family)</code></td>
+      <td>Dependent variables grouped in families for error control</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rhs()</code></td>
+      <td>Independent variable of interest and controls</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="modelling-options">Modelling Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">controls()</code></td>
+      <td>Control variables. Use <code class="language-plaintext highlighter-rouge">@</code> for current LHS variable name</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">critical()</code></td>
+      <td>P-value threshold for significance highlighting (default: 0.05)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">or</code></td>
+      <td>Display odds ratios (exponentiated coefficients)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">d</code></td>
+      <td>Display Cohen’s <em>d</em> (standardized effect sizes)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bonferroni</code></td>
+      <td>Bonferroni correction for multiple comparisons</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bh</code></td>
+      <td>Benjamini-Hochberg correction for multiple comparisons</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mde</code></td>
+      <td>Show minimum detectable effects at 80% power</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="display-options">Display Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sort(local\|global)</code></td>
+      <td>Sort results by effect size</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">graphopts()</code></td>
+      <td>Additional twoway graph options</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Load example data</span>
+<span class="k">sysuse</span><span class="w"> </span><span class="n">auto</span><span class="p">,</span><span class="w"> </span><span class="n">clear</span>
+<span class="k">gen</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rep78</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">3</span>
+<span class="k">gen</span><span class="w"> </span><span class="n">check2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">-</span><span class="n">foreign</span>
+<span class="k">label</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">origin</span>
+
+<span class="c1">* Basic forest plot</span>
+<span class="n">forest</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="p">(</span><span class="n">headroom</span><span class="w"> </span><span class="n">foreign</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">rep78</span><span class="p">)</span>
+
+<span class="c1">* With standardized effect sizes (Cohen's d)</span>
+<span class="n">forest</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="p">(</span><span class="n">headroom</span><span class="w"> </span><span class="n">foreign</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">rep78</span><span class="p">)</span><span class="w"> </span><span class="n">d</span>
+
+<span class="c1">* With Bonferroni correction</span>
+<span class="n">forest</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="p">(</span><span class="n">headroom</span><span class="w"> </span><span class="n">foreign</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">rep78</span><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+
+<span class="c1">* With Benjamini-Hochberg correction</span>
+<span class="n">forest</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="p">(</span><span class="n">headroom</span><span class="w"> </span><span class="n">foreign</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">rep78</span><span class="p">)</span><span class="w"> </span><span class="n">bh</span>
+
+<span class="c1">* Logistic regression with odds ratios</span>
+<span class="n">forest</span><span class="w"> </span><span class="n">logit</span><span class="w"> </span><span class="p">(</span><span class="n">check2</span><span class="w"> </span><span class="n">foreign</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">check</span><span class="p">)</span><span class="w"> </span><span class="n">or</span>
+</code></pre></div></div>
+
+<h2 id="notes">Notes</h2>
+
+<p><code class="language-plaintext highlighter-rouge">forest</code> currently requires that estimates follow the format returned by the standard <code class="language-plaintext highlighter-rouge">regress</code> command. That is, estimates are extracted from the first row of the <code class="language-plaintext highlighter-rouge">r(table)</code> matrix after estimation.</p>
+
+<p>Both <code class="language-plaintext highlighter-rouge">bonferroni</code> and <code class="language-plaintext highlighter-rouge">bh</code> can be specified together, but they produce different adjustments:</p>
+<ul>
+  <li>Bonferroni adjusts the confidence intervals</li>
+  <li>Benjamini-Hochberg adjusts the significance markers</li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

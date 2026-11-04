@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>txt2qr | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>txt2qr</h1>
+    <p class="package-tagline">Generate QR codes from text</p>
+    <div class="package-meta">
+      <span class="category">Specialized Tools</span>
+      
+      <a href="https://github.com/bbdaniels/txt2qr" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install txt2qr, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">txt2qr</code> generates a QR code containing specified text and saves it to disk as an image file.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">txt2qr</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">using</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span>
+</code></pre></div></div>
+
+<h2 id="requirements">Requirements</h2>
+
+<ul>
+  <li>Internet connection required</li>
+  <li>Special characters not currently supported</li>
+  <li>Recommended file extension: <code class="language-plaintext highlighter-rouge">.png</code></li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">txt2qr</span><span class="w"> </span><span class="s2">"https://github.com/bbdaniels/stata"</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"repo_link.png"</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span>
+</code></pre></div></div>
+
+<h2 id="use-cases">Use Cases</h2>
+
+<ul>
+  <li>Generate QR codes for survey links</li>
+  <li>Create scannable identifiers for data collection</li>
+  <li>Add QR codes to printed materials</li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

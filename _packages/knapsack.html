@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>knapsack | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>knapsack</h1>
+    <p class="package-tagline">0/1 Knapsack Problem solver</p>
+    <div class="package-meta">
+      <span class="category">Specialized Tools</span>
+      
+      <a href="https://github.com/bbdaniels/knapsack" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install knapsack, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">knapsack</code> implements a solution for the 0/1 Knapsack Problem. Given a budget constraint and items with costs and values, it finds the set of items that maximizes total value while staying within budget.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">knapsack</span><span class="w"> </span><span class="n">budget</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="n">generate</span><span class="p">(</span><span class="n">newvarname</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">price(varname)</code></td>
+      <td>Variable containing item costs</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">value(varname)</code></td>
+      <td>Variable containing item values</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">generate(newvar)</code></td>
+      <td>Create indicator for items in optimal set</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Each observation is an item with a cost and value</span>
+<span class="c1">* Find optimal selection within budget of 100</span>
+<span class="n">knapsack</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">benefit</span><span class="p">)</span><span class="w"> </span><span class="n">gen</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span>
+
+<span class="c1">* selected = 1 for items in optimal set</span>
+<span class="c1">* selected = 0 for items not selected</span>
+</code></pre></div></div>
+
+<h2 id="algorithm">Algorithm</h2>
+
+<p>Uses dynamic programming solution as described in the <a href="http://www.es.ele.tue.nl/education/5MC10/Solutions/knapsack.pdf">TU Eindhoven lecture notes</a>.</p>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

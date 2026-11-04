@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rctreg | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>rctreg</h1>
+    <p class="package-tagline">RCT regression tables with treatment/control means</p>
+    <div class="package-meta">
+      <span class="category">Regression & Analysis</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install rctreg, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">rctreg</code> performs regressions for randomized controlled trials, producing tables that show treatment and control means alongside intent-to-treat (ITT) regression estimates. It supports contamination-adjusted IV estimates and exports results to Excel.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rctreg</span><span class="w"> </span><span class="kt">varlist</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">],</span>
+<span class="w">    </span><span class="n">treatment</span><span class="p">(</span><span class="kt">varlist</span><span class="p">)</span><span class="w"> </span><span class="n">controls</span><span class="p">(</span><span class="kt">varlist</span><span class="p">)</span>
+<span class="w">    </span><span class="p">[</span><span class="n">lag</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">iv</span><span class="p">()]</span><span class="w"> </span><span class="p">[</span><span class="nf">round</span><span class="p">()]</span><span class="w"> </span><span class="p">[</span><span class="n">title</span><span class="p">()]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">sd</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">ci</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">p</span><span class="o">|</span><span class="n">se</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">regression_options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">treatment()</code></td>
+      <td>Binary treatment variable (0=control) with basic controls</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">controls()</code></td>
+      <td>Additional controls for adjusted ITT regressions</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">lag</code></td>
+      <td>Add first lag of dependent variable to controls</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">iv()</code></td>
+      <td>Variable to instrument for contamination-adjusted analysis</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">round()</code></td>
+      <td>Rounding unit (default: 0.01)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">title()</code></td>
+      <td>Table title</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sd</code></td>
+      <td>Show standard deviations below means</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ci</code></td>
+      <td>Show 95% confidence intervals after estimates</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">p</code></td>
+      <td>Show p-values below estimates</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">se</code></td>
+      <td>Show standard errors below estimates</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

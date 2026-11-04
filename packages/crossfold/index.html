@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>crossfold | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>crossfold</h1>
+    <p class="package-tagline">K-fold cross-validation for model evaluation</p>
+    <div class="package-meta">
+      <span class="category">Regression & Analysis</span>
+      
+      <a href="https://github.com/bbdaniels/crossfold" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install crossfold, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">crossfold</code> performs <em>k</em>-fold cross-validation on a specified model to evaluate its ability to fit out-of-sample data.</p>
+
+<p>The procedure:</p>
+<ol>
+  <li>Splits data randomly into <em>k</em> partitions</li>
+  <li>For each partition, fits the model using the other <em>k</em>-1 groups</li>
+  <li>Uses resulting parameters to predict the dependent variable in the held-out group</li>
+  <li>Reports a goodness-of-fit measure from each fold</li>
+</ol>
+
+<p>The default evaluation metric is root mean squared error (RMSE).</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">crossfold</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">weight</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="n">eif</span><span class="p">()]</span><span class="w"> </span><span class="p">[</span><span class="n">ein</span><span class="p">()]</span><span class="w"> </span><span class="p">[</span><span class="n">eweight</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">stub</span><span class="p">(</span><span class="kt">string</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">k</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">loud</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">mae</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">r2</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">model_options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">eif()</code> / <code class="language-plaintext highlighter-rouge">ein()</code></td>
+      <td>Restrictions on the out-of-sample evaluation set</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">eweight(varname)</code></td>
+      <td>Weighting for error evaluation</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stub(string)</code></td>
+      <td>Stub name for estimation results (default: “est”)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">k(value)</code></td>
+      <td>Number of folds (default: 5, max: 300)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">loud</code></td>
+      <td>Display each model as it is fit</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mae</code></td>
+      <td>Calculate mean absolute error instead of RMSE</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">r2</code></td>
+      <td>Calculate pseudo-R-squared instead of RMSE</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Load data</span>
+<span class="k">sysuse</span><span class="w"> </span><span class="n">nlsw88</span>
+
+<span class="c1">* Basic 5-fold cross-validation with RMSE</span>
+<span class="n">crossfold</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="n">wage</span><span class="w"> </span><span class="n">union</span>
+
+<span class="w">             </span><span class="o">|</span><span class="w">      </span><span class="n">RMSE</span>
+<span class="o">-------------+-----------</span>
+<span class="w">        </span><span class="n">est1</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="m">4.171849</span>
+<span class="w">        </span><span class="n">est2</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="m">4.105884</span>
+<span class="w">        </span><span class="n">est3</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="m">4.038483</span>
+<span class="w">        </span><span class="n">est4</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="m">4.151482</span>
+<span class="w">        </span><span class="n">est5</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="m">4.171727</span>
+
+<span class="c1">* Using mean absolute error</span>
+<span class="n">crossfold</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="n">wage</span><span class="w"> </span><span class="n">union</span><span class="p">,</span><span class="w"> </span><span class="n">mae</span>
+
+<span class="c1">* Using pseudo-R-squared</span>
+<span class="n">crossfold</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="n">wage</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="o">i.</span><span class="n">race</span><span class="w"> </span><span class="o">i.</span><span class="n">industry</span><span class="w"> </span><span class="o">i.</span><span class="n">occupation</span><span class="p">,</span><span class="w"> </span><span class="n">r2</span>
+
+<span class="c1">* With weights and 3 folds</span>
+<span class="n">crossfold</span><span class="w"> </span><span class="n">qreg</span><span class="w"> </span><span class="n">wage</span><span class="w"> </span><span class="n">union</span><span class="w"> </span><span class="n">collgrad</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="p">[</span><span class="n">weight</span><span class="o">=</span><span class="n">hours</span><span class="p">],</span><span class="w"> </span><span class="c1">///</span>
+<span class="w">    </span><span class="n">eweight</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span><span class="w"> </span><span class="n">k</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="n">mae</span>
+</code></pre></div></div>
+
+<h2 id="saved-results">Saved Results</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Result</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">r(stub)</code></td>
+      <td>Matrix containing model errors (named <code class="language-plaintext highlighter-rouge">r(est)</code> by default)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stub1</code> … <code class="language-plaintext highlighter-rouge">stubk</code></td>
+      <td>Model parameters, recallable with <code class="language-plaintext highlighter-rouge">estimates restore</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>Schonlau, Matthias. “Boosted regression (boosting): An introductory tutorial and a Stata plugin.” <em>The Stata Journal</em> (2005). 5(3): 330-354.</li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

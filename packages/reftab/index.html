@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reftab | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>reftab</h1>
+    <p class="package-tagline">Summary statistics and regression results by category</p>
+    <div class="package-meta">
+      <span class="category">Regression & Analysis</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install reftab, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">reftab</code> displays and exports a matrix of summary statistics and regression results. It shows means of requested variables and estimated marginal effects of membership in various categories relative to a reference category.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">reftab</span><span class="w"> </span><span class="kt">varlist</span><span class="w"> </span><span class="p">[</span><span class="n">using</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">],</span>
+<span class="w">    </span><span class="n">byvar</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span><span class="w"> </span><span class="n">refcat</span><span class="p">(</span><span class="n">base_value</span><span class="p">)</span>
+<span class="w">    </span><span class="p">[</span><span class="n">iv</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">controls</span><span class="p">(</span><span class="kt">varlist</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">logit</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">cluster</span><span class="p">(</span><span class="n">clustvar</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">decimals</span><span class="p">()]</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">sem</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">xml_tab_options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">byvar()</code></td>
+      <td>Variable defining categories</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">refcat()</code></td>
+      <td>Reference category value</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">iv()</code></td>
+      <td>Variable to instrument in final panel</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">controls()</code></td>
+      <td>Control variables for adjusted estimates</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">logit</code></td>
+      <td>Calculate differences as odds ratios</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cluster()</code></td>
+      <td>Cluster variable for standard errors</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">decimals()</code></td>
+      <td>Decimal places per variable</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n</code></td>
+      <td>Add sample sizes to means panel</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sem</code></td>
+      <td>Add standard errors of means</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="output-structure">Output Structure</h2>
+
+<ol>
+  <li><strong>Means panel</strong>: Group means with optional SEs</li>
+  <li><strong>Regression panels</strong>: Coefficients for each category relative to reference</li>
+  <li><strong>Adjusted panels</strong> (if controls specified): Controlled estimates</li>
+  <li><strong>IV panel</strong> (if iv specified): Instrumented estimates</li>
+</ol>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>specc | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>specc</h1>
+    <p class="package-tagline">Specification curve analysis automation</p>
+    <div class="package-meta">
+      <span class="category">Regression & Analysis</span>
+      
+      <a href="https://github.com/bbdaniels/specc" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install specc, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">specc</code> manages component dofiles and alternative specifications for creating specification curves in Stata. It automates the exploration of “the garden of forking paths” in statistical analysis.</p>
+
+<p>The command:</p>
+<ol>
+  <li>Enables assisted creation of sets of alternative options (“methods”) for each analytical choice</li>
+  <li>Automatically assembles all decisions into the full set of possible specifications</li>
+  <li>Reduces the programming task for an exponential number of specifications to a linear amount of coding</li>
+</ol>
+
+<h2 id="functions">Functions</h2>
+
+<h3 id="initialize">Initialize</h3>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">specc</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"/specc/directory/"</span>
+</code></pre></div></div>
+
+<p>Creates the directory and database for building a specification curve.</p>
+
+<h3 id="create-methods">Create Methods</h3>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">specc</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">class_name</span><span class="w"> </span><span class="n">method_name</span>
+<span class="w">    </span><span class="s2">"Method Description"</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"/specc/directory/"</span>
+<span class="w">    </span><span class="p">[,</span><span class="w"> </span><span class="n">code</span><span class="p">(</span><span class="s2">"starter Stata code"</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">replace</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Creates a new method representing a choice at some stage in the decision tree.</p>
+
+<h3 id="remove-methods">Remove Methods</h3>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">specc</span><span class="w"> </span><span class="n">remove</span><span class="w"> </span><span class="n">class_name</span><span class="w"> </span><span class="n">method_name</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"/specc/directory/"</span>
+</code></pre></div></div>
+
+<p>Deletes a method and its corresponding dofile.</p>
+
+<h3 id="set-execution-order">Set Execution Order</h3>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">specc</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">class_name</span><span class="w"> </span><span class="p">[</span><span class="n">class_name</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="w"> </span><span class="n">model</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"/specc/directory/"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">reset</span>
+</code></pre></div></div>
+
+<p>Instructs <code class="language-plaintext highlighter-rouge">specc</code> to prepare execution across the specified classes. The <code class="language-plaintext highlighter-rouge">model</code> class must always be last.</p>
+
+<h3 id="report-status">Report Status</h3>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">specc</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="p">[</span><span class="n">class_name</span><span class="w"> </span><span class="n">method_name</span><span class="p">]</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"/specc/directory/"</span><span class="w"> </span><span class="p">[,</span><span class="w"> </span><span class="n">sort</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Returns the current status of the registry, including available classes and methods.</p>
+
+<h3 id="run-analysis">Run Analysis</h3>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">specc</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"/specc/directory/"</span>
+<span class="w">    </span><span class="p">[,</span><span class="w"> </span><span class="n">sort</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">save</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">twoway_options</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Executes the full set of specifications and displays the specification curve.</p>
+
+<h2 id="workflow-example">Workflow Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* 1. Initialize the specification curve directory</span>
+<span class="n">specc</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span>
+
+<span class="c1">* 2. Create methods for different analytical choices</span>
+<span class="n">specc</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">outcomes</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="s2">"Primary outcome"</span><span class="w"> </span><span class="c1">///</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">(</span><span class="s2">"gen y = outcome1"</span><span class="p">)</span>
+
+<span class="n">specc</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">outcomes</span><span class="w"> </span><span class="n">alt</span><span class="w"> </span><span class="s2">"Alternative outcome"</span><span class="w"> </span><span class="c1">///</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">(</span><span class="s2">"gen y = outcome2"</span><span class="p">)</span>
+
+<span class="n">specc</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">controls</span><span class="w"> </span><span class="n">none</span><span class="w"> </span><span class="s2">"No controls"</span><span class="w"> </span><span class="c1">///</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">(</span><span class="s2">"local controls"</span><span class="p">)</span>
+
+<span class="n">specc</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">controls</span><span class="w"> </span><span class="n">full</span><span class="w"> </span><span class="s2">"Full controls"</span><span class="w"> </span><span class="c1">///</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">(</span><span class="s2">"local controls age gender income"</span><span class="p">)</span>
+
+<span class="c1">* 3. Set the execution order</span>
+<span class="n">specc</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">outcomes</span><span class="w"> </span><span class="n">controls</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span><span class="p">,</span><span class="w"> </span><span class="n">reset</span>
+
+<span class="c1">* 4. Check status</span>
+<span class="n">specc</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span>
+
+<span class="c1">* 5. Run all specifications</span>
+<span class="n">specc</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="s2">"analysis/specc/"</span><span class="p">,</span><span class="w"> </span><span class="n">save</span>
+</code></pre></div></div>
+
+<h2 id="concept">Concept</h2>
+
+<p>The “garden of forking paths” refers to the many decisions researchers make during analysis:</p>
+<ul>
+  <li>Which outcome measure to use</li>
+  <li>Which controls to include</li>
+  <li>What functional form to assume</li>
+  <li>How to handle missing data</li>
+  <li>etc.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">specc</code> makes it easy to systematically explore all combinations of these choices, producing a specification curve that shows how robust your results are to different analytical decisions.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>Gelman, A. &amp; Loken, E. “The Garden of Forking Paths” (2013)</li>
+  <li>Simonsohn, U., Simmons, J.P., &amp; Nelson, L.D. “Specification Curve: Descriptive and Inferential Statistics on All Reasonable Specifications” (2015)</li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

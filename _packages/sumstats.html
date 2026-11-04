@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sumstats | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>sumstats</h1>
+    <p class="package-tagline">Summary statistics tables with conditional restrictions</p>
+    <div class="package-meta">
+      <span class="category">Summary Statistics & Tables</span>
+      
+      <a href="https://github.com/bbdaniels/sumstats" class="github-link">View on GitHub</a>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install sumstats, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">sumstats</code> generates tables of summary statistics with various <code class="language-plaintext highlighter-rouge">if</code>-restrictions and exports them to Excel using <code class="language-plaintext highlighter-rouge">putexcel</code>. It allows you to create complex summary statistics tables with different variable sets and conditions in a single command.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sumstats</span><span class="w"> </span><span class="p">(</span><span class="n">varlist_1</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">])</span><span class="w"> </span><span class="p">[(</span><span class="n">varlist_2</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">])]</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"/path/to/output.xlsx"</span><span class="w"> </span><span class="p">[</span><span class="n">weight</span><span class="p">]</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="n">stats_list</span><span class="p">)</span>
+<span class="w">    </span><span class="p">[</span><span class="n">replace</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">sheet</span><span class="p">(</span><span class="n">sheetname</span><span class="w"> </span><span class="p">[,</span><span class="w"> </span><span class="n">replace</span><span class="p">])]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stats()</code></td>
+      <td>Statistics to calculate (uses <code class="language-plaintext highlighter-rouge">tabstat</code> syntax)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">replace</code></td>
+      <td>Replace the output file if it exists</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sheet()</code></td>
+      <td>Specify sheet name using <code class="language-plaintext highlighter-rouge">putexcel</code> syntax</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="supported-statistics">Supported Statistics</h2>
+
+<p>Any statistic supported by <code class="language-plaintext highlighter-rouge">tabstat</code>:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mean</code> - Arithmetic mean</li>
+  <li><code class="language-plaintext highlighter-rouge">sd</code> - Standard deviation</li>
+  <li><code class="language-plaintext highlighter-rouge">min</code> / <code class="language-plaintext highlighter-rouge">max</code> - Minimum / Maximum</li>
+  <li><code class="language-plaintext highlighter-rouge">p25</code> / <code class="language-plaintext highlighter-rouge">p50</code> / <code class="language-plaintext highlighter-rouge">p75</code> - Percentiles</li>
+  <li><code class="language-plaintext highlighter-rouge">count</code> / <code class="language-plaintext highlighter-rouge">n</code> - Number of observations</li>
+  <li>And more…</li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">* Load data</span>
+<span class="k">sysuse</span><span class="w"> </span><span class="n">auto</span><span class="o">.</span><span class="n">dta</span><span class="p">,</span><span class="w"> </span><span class="n">clear</span>
+
+<span class="c1">* Create summary statistics with different conditions</span>
+<span class="n">sumstats</span><span class="w"> </span><span class="c1">///</span>
+<span class="w">    </span><span class="p">(</span><span class="n">price</span><span class="w"> </span><span class="n">mpg</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">foreign</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="c1">///</span>
+<span class="w">    </span><span class="p">(</span><span class="n">price</span><span class="w"> </span><span class="n">displacement</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">foreign</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="c1">///</span>
+<span class="k">    using</span><span class="w"> </span><span class="s2">"summary_stats.xlsx"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="n">mean</span><span class="w"> </span><span class="n">sd</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This creates a table showing:</p>
+<ul>
+  <li>Mean and SD of price and mpg for domestic cars</li>
+  <li>Mean and SD of price, displacement, and length for foreign cars</li>
+</ul>
+
+<h2 id="usage-notes">Usage Notes</h2>
+
+<ul>
+  <li>Each parenthesized group can have its own variable list and <code class="language-plaintext highlighter-rouge">if</code> condition</li>
+  <li><code class="language-plaintext highlighter-rouge">aweights</code> and <code class="language-plaintext highlighter-rouge">fweights</code> are supported</li>
+  <li>Statistics are calculated using <code class="language-plaintext highlighter-rouge">tabstat</code></li>
+  <li>Output is formatted using <code class="language-plaintext highlighter-rouge">putexcel</code></li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

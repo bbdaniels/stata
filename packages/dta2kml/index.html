@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dta2kml | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="package-page">
+  <div class="package-header">
+    <h1>dta2kml</h1>
+    <p class="package-tagline">Export data to KML for geographic visualization</p>
+    <div class="package-meta">
+      <span class="category">Specialized Tools</span>
+      
+    </div>
+  </div>
+
+  <div class="install-box">
+    <h3>Installation</h3>
+    <pre><code>net install dta2kml, from("https://raw.githubusercontent.com/bbdaniels/stata/main/")</code></pre>
+  </div>
+
+  <div class="package-content">
+    <h2 id="description">Description</h2>
+
+<p><code class="language-plaintext highlighter-rouge">dta2kml</code> outputs a KML file from selected datapoints in a Stata dataset for visualization in Google Earth or other geographic software.</p>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dta2kml</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">filename</span><span class="w"> </span><span class="p">[</span><span class="kr">if</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="kr">in</span><span class="p">],</span>
+<span class="w">    </span><span class="n">latitude</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span><span class="w"> </span><span class="n">longitude</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span>
+<span class="w">    </span><span class="p">[</span><span class="n">altitude</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">folders</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">names</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">icons</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">descriptions</span><span class="p">(</span><span class="n">varname</span><span class="p">)]</span>
+<span class="w">    </span><span class="p">[</span><span class="n">replace</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">latitude()</code></td>
+      <td>Variable with latitude (decimal format)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">longitude()</code></td>
+      <td>Variable with longitude (decimal format)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">altitude()</code></td>
+      <td>Variable with altitude in meters</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folders()</code></td>
+      <td>Variable for folder grouping</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">names()</code></td>
+      <td>Variable for placemark names</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">icons()</code></td>
+      <td>Variable with icon URLs</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">descriptions()</code></td>
+      <td>Variable for placemark descriptions</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">replace</code></td>
+      <td>Replace existing file</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="notes">Notes</h2>
+
+<ul>
+  <li>Coordinates must be in decimal format, not degrees-minutes-seconds</li>
+  <li>Altitude in meters</li>
+  <li>Icons from <a href="http://kml4earth.appspot.com/icons.html">KML Icon Library</a></li>
+</ul>
+
+<h2 id="author">Author</h2>
+
+<p>Benjamin Daniels (<a href="mailto:bbdaniels@gmail.com">bbdaniels@gmail.com</a>)</p>
+
+  </div>
+
+  <div class="package-footer">
+    <a href="/stata/packages/">&larr; Back to all packages</a>
+  </div>
+</article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

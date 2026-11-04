@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | Stata Packages for Research</title>
+  <link rel="stylesheet" href="/stata/assets/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="/stata/">Stata Packages for Research</a></h1>
+      <nav>
+        <a href="/stata/">Home</a>
+        <a href="/stata/packages/">Packages</a>
+        <a href="https://github.com/bbdaniels/stata">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+  <h1>Stata Packages for Research</h1>
+  <p>A collection of open-source Stata packages for research, data analysis, and visualization.</p>
+  <div class="hero-buttons">
+    <a href="/stata/packages/" class="btn btn-primary">Browse Packages</a>
+    <a href="https://github.com/bbdaniels/stata" class="btn btn-secondary">View on GitHub</a>
+  </div>
+</div>
+
+<h2 id="quick-install">Quick Install</h2>
+
+<p>Install any package directly in Stata:</p>
+
+<div class="language-stata highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">net</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">packagename</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="p">(</span><span class="s2">"https://raw.githubusercontent.com/bbdaniels/stata/main/"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="featured-packages">Featured Packages</h2>
+
+<div class="package-grid">
+  <a href="/stata/packages/forest/" class="package-card">
+    <h3>forest</h3>
+    <p>Create forest plots visualizing results from multiple regressions with effect sizes and error control.</p>
+    <span class="category">Visualization</span>
+  </a>
+
+  <a href="/stata/packages/outwrite/" class="package-card">
+    <h3>outwrite</h3>
+    <p>Export regression results to Excel, CSV, or LaTeX with customizable formatting.</p>
+    <span class="category">Regression</span>
+  </a>
+
+  <a href="/stata/packages/betterbar/" class="package-card">
+    <h3>betterbar</h3>
+    <p>Bar graphs with standard error bars and cross-group comparisons.</p>
+    <span class="category">Visualization</span>
+  </a>
+
+  <a href="/stata/packages/crossfold/" class="package-card">
+    <h3>crossfold</h3>
+    <p>K-fold cross-validation to evaluate model out-of-sample fit.</p>
+    <span class="category">Analysis</span>
+  </a>
+
+  <a href="/stata/packages/specc/" class="package-card">
+    <h3>specc</h3>
+    <p>Automate specification curve analysis across the garden of forking paths.</p>
+    <span class="category">Analysis</span>
+  </a>
+
+  <a href="/stata/packages/sumstats/" class="package-card">
+    <h3>sumstats</h3>
+    <p>Generate summary statistics tables with conditional restrictions.</p>
+    <span class="category">Tables</span>
+  </a>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="/stata/packages/" class="btn btn-primary">View All 29 Packages</a>
+</p>
+
+<h2 id="citation">Citation</h2>
+
+<p>If you use these packages in your research, please cite:</p>
+
+<div class="language-bibtex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@software</span><span class="p">{</span><span class="nl">daniels_stata_packages</span><span class="p">,</span>
+  <span class="na">author</span>       <span class="p">=</span> <span class="s">{Benjamin Daniels}</span><span class="p">,</span>
+  <span class="na">title</span>        <span class="p">=</span> <span class="s">{Stata Packages for Research}</span><span class="p">,</span>
+  <span class="na">year</span>         <span class="p">=</span> <span class="s">{2024}</span><span class="p">,</span>
+  <span class="na">publisher</span>    <span class="p">=</span> <span class="s">{Zenodo}</span><span class="p">,</span>
+  <span class="na">doi</span>          <span class="p">=</span> <span class="s">{10.5281/zenodo.6263355}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://doi.org/10.5281/zenodo.6263355"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6263355.svg" alt="DOI" /></a></p>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Benjamin Daniels. Licensed under MIT.</p>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.6263355">DOI: 10.5281/zenodo.6263355</a> |
+        <a href="https://github.com/bbdaniels/stata">View on GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
