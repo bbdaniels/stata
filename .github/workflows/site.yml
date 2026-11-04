@@ -1,0 +1,52 @@
+name: Build the site into the site branch
+
+# The package site is served at bbdaniels.com/stata/ by the bbdaniels.github.io build (build-site.py, PROJECTS),
+# which fetches the site branch. GitHub Pages no longer serves it (2026-11-04). The site branch holds only built
+# files and gains one commit per build; it is never force-pushed.
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "site"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: docs
+
+      - name: Build with Jekyll
+        working-directory: docs
+        run: bundle exec jekyll build --baseurl /stata
+        env:
+          JEKYLL_ENV: production
+
+      - name: Commit the built site to the site branch
+        run: |
+          if git fetch --depth 1 origin site:site; then
+            git worktree add ../out site
+          else
+            git worktree add --orphan -b site ../out
+          fi
+          rsync -a --delete --exclude .git docs/_site/ ../out/
+          cd ../out
+          git add -A
+          if git diff --cached --quiet; then echo "site unchanged"; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Site built from ${GITHUB_SHA}"
+          git push origin site
